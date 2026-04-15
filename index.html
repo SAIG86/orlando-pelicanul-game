@@ -1,117 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shooter Orlando vs Pelicanul</title>
+<meta charset="UTF-8">
+<title>Orlando vs Pelicanul</title>
+
 <style>
     body {
-        background: #111;
-        color: white;
-        font-family: Arial;
-        text-align: center;
         margin: 0;
         overflow: hidden;
-        cursor: crosshair;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+
+    #hud {
+        position: fixed;
+        top: 10px;
+        width: 100%;
+        font-size: 22px;
+        z-index: 10;
     }
 
     #gameArea {
         position: relative;
         width: 100vw;
-        height: 80vh;
-        background: #222;
-        overflow: hidden;
-        border-top: 3px solid #555;
-        border-bottom: 3px solid #555;
+        height: 100vh;
     }
 
     .target {
         position: absolute;
-        width: 160px;
+        width: 120px;
+        height: 150px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 5px;
+        color: black;
+        font-weight: bold;
+        border: 3px solid white;
+    }
+
+    .avatar {
+        width: 90px;
         height: 90px;
-        line-height: 90px;
-        font-size: 26px;
-        font-weight: bold;
-        border-radius: 12px;
-        cursor: crosshair;
-        user-select: none;
-        transition: transform 0.2s ease;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-
-    .target:active {
-        transform: scale(0.9);
-    }
-
-    #orlando { background: linear-gradient(#ff4444, #cc0000); }
-    #pelicanul { background: linear-gradient(#448aff, #0055cc); }
-
-    #hud {
-        margin-top: 10px;
-        font-size: 22px;
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 20px;
-        margin-top: 10px;
-        border-radius: 8px;
-        border: none;
-        background: #00c853;
-        color: white;
-        font-weight: bold;
-    }
-
-    .hitFlash {
-        animation: flash 0.2s;
-    }
-
-    @keyframes flash {
-        0% { background: yellow; }
-        100% { background: inherit; }
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 5px;
     }
 </style>
 </head>
+
 <body>
 
-<h2>Shooter: Orlando vs Pelicanul</h2>
-
 <div id="hud">
-    Timp: <span id="time">30</span> |
-    Gloanțe: <span id="ammo">20</span> |
-    Scor: <span id="score">0</span>
+    Scor: <span id="score">0</span> |
+    Gloanțe: <span id="ammo">30</span> |
+    Timp: <span id="time">20</span>
 </div>
 
 <div id="gameArea">
-    <div id="orlando" class="target">Orlando</div>
-    <div id="pelicanul" class="target">Pelicanul</div>
-</div>
 
-<button onclick="restartGame()">Restart</button>
+    <div id="orlando" class="target">
+        <img src="FB_IMG_1776274065002.jpg" class="avatar">
+        Orlando
+    </div>
+
+    <div id="pelicanul" class="target">
+        <img src="images.jpeg" class="avatar">
+        Pelicanul
+    </div>
+
+    <div id="cristian" class="target">
+        <img src="20260415_164254.jpg" class="avatar">
+        Cristian
+    </div>
+
+</div>
 
 <script>
 let score = 0;
-let ammo = 20;
-let timeLeft = 30;
-let gameInterval;
-let moveInterval;
+let ammo = 30;
+let timeLeft = 20;
 
 const orlando = document.getElementById("orlando");
 const pelicanul = document.getElementById("pelicanul");
-const gameArea = document.getElementById("gameArea");
+const cristian = document.getElementById("cristian");
+
+let moveInterval;
+let gameInterval;
 
 function randomPosition(target) {
-    const maxX = gameArea.clientWidth - target.clientWidth;
-    const maxY = gameArea.clientHeight - target.clientHeight;
+    const area = document.getElementById("gameArea");
+    const maxX = area.clientWidth - 120;
+    const maxY = area.clientHeight - 150;
 
-    target.style.left = Math.random() * maxX + "px";
-    target.style.top = Math.random() * maxY + "px";
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    target.style.left = x + "px";
+    target.style.top = y + "px";
 }
+
+function shoot(targetName, element) {
+    if (ammo <= 0) return;
+
+    ammo--;
+    document.getElementById("ammo").textContent = ammo;
+
+    if (targetName === "pelicanul") score++;
+    if (targetName === "orlando") score--;
+    if (targetName === "cristian") score--;
+
+    document.getElementById("score").textContent = score;
+}
+
+orlando.onclick = () => shoot("orlando", orlando);
+pelicanul.onclick = () => shoot("pelicanul", pelicanul);
+cristian.onclick = () => shoot("cristian", cristian);
 
 function startMovingTargets() {
     moveInterval = setInterval(() => {
         randomPosition(orlando);
         randomPosition(pelicanul);
-    }, 900);
+        randomPosition(cristian);
+    }, 600);
 }
 
 function startGameTimer() {
@@ -125,47 +140,25 @@ function startGameTimer() {
     }, 1000);
 }
 
-function shoot(targetName, element) {
-    if (ammo <= 0 || timeLeft <= 0) return;
-
-    ammo--;
-    document.getElementById("ammo").textContent = ammo;
-
-    element.classList.add("hitFlash");
-    setTimeout(() => element.classList.remove("hitFlash"), 200);
-
-    if (targetName === "pelicanul") score++;
-    if (targetName === "orlando") score--;
-
-    document.getElementById("score").textContent = score;
-}
-
-orlando.onclick = () => shoot("orlando", orlando);
-pelicanul.onclick = () => shoot("pelicanul", pelicanul);
-
 function endGame() {
-    clearInterval(gameInterval);
     clearInterval(moveInterval);
+    clearInterval(gameInterval);
     alert("Joc terminat! Scor final: " + score);
 }
 
-function restartGame() {
-    score = 0;
-    ammo = 20;
-    timeLeft = 30;
-
-    document.getElementById("score").textContent = score;
-    document.getElementById("ammo").textContent = ammo;
-    document.getElementById("time").textContent = timeLeft;
-
-    clearInterval(gameInterval);
-    clearInterval(moveInterval);
-
-    startMovingTargets();
-    startGameTimer();
+function randomColor() {
+    const colors = ["red", "yellow", "blue", "orange", "purple", "green"];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
-restartGame();
+setInterval(() => {
+    orlando.style.background = randomColor();
+    pelicanul.style.background = randomColor();
+    cristian.style.background = randomColor();
+}, 500);
+
+startMovingTargets();
+startGameTimer();
 </script>
 
 </body>
