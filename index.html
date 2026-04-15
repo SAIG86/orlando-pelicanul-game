@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shooter Orlando vs Pelicanul</title>
+<style>
+    body {
+        background: #111;
+        color: white;
+        font-family: Arial;
+        text-align: center;
+        margin: 0;
+        overflow: hidden;
+        cursor: crosshair;
+    }
+
+    #gameArea {
+        position: relative;
+        width: 100vw;
+        height: 80vh;
+        background: #222;
+        overflow: hidden;
+        border-top: 3px solid #555;
+        border-bottom: 3px solid #555;
+    }
+
+    .target {
+        position: absolute;
+        width: 160px;
+        height: 90px;
+        line-height: 90px;
+        font-size: 26px;
+        font-weight: bold;
+        border-radius: 12px;
+        cursor: crosshair;
+        user-select: none;
+        transition: transform 0.2s ease;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .target:active {
+        transform: scale(0.9);
+    }
+
+    #orlando { background: linear-gradient(#ff4444, #cc0000); }
+    #pelicanul { background: linear-gradient(#448aff, #0055cc); }
+
+    #hud {
+        margin-top: 10px;
+        font-size: 22px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 20px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: none;
+        background: #00c853;
+        color: white;
+        font-weight: bold;
+    }
+
+    .hitFlash {
+        animation: flash 0.2s;
+    }
+
+    @keyframes flash {
+        0% { background: yellow; }
+        100% { background: inherit; }
+    }
+</style>
+</head>
+<body>
+
+<h2>Shooter: Orlando vs Pelicanul</h2>
+
+<div id="hud">
+    Timp: <span id="time">30</span> |
+    Gloanțe: <span id="ammo">20</span> |
+    Scor: <span id="score">0</span>
+</div>
+
+<div id="gameArea">
+    <div id="orlando" class="target">Orlando</div>
+    <div id="pelicanul" class="target">Pelicanul</div>
+</div>
+
+<button onclick="restartGame()">Restart</button>
+
+<script>
+let score = 0;
+let ammo = 20;
+let timeLeft = 30;
+let gameInterval;
+let moveInterval;
+
+const orlando = document.getElementById("orlando");
+const pelicanul = document.getElementById("pelicanul");
+const gameArea = document.getElementById("gameArea");
+
+function randomPosition(target) {
+    const maxX = gameArea.clientWidth - target.clientWidth;
+    const maxY = gameArea.clientHeight - target.clientHeight;
+
+    target.style.left = Math.random() * maxX + "px";
+    target.style.top = Math.random() * maxY + "px";
+}
+
+function startMovingTargets() {
+    moveInterval = setInterval(() => {
+        randomPosition(orlando);
+        randomPosition(pelicanul);
+    }, 900);
+}
+
+function startGameTimer() {
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+
+        if (timeLeft <= 0 || ammo <= 0) {
+            endGame();
+        }
+    }, 1000);
+}
+
+function shoot(targetName, element) {
+    if (ammo <= 0 || timeLeft <= 0) return;
+
+    ammo--;
+    document.getElementById("ammo").textContent = ammo;
+
+    element.classList.add("hitFlash");
+    setTimeout(() => element.classList.remove("hitFlash"), 200);
+
+    if (targetName === "pelicanul") score++;
+    if (targetName === "orlando") score--;
+
+    document.getElementById("score").textContent = score;
+}
+
+orlando.onclick = () => shoot("orlando", orlando);
+pelicanul.onclick = () => shoot("pelicanul", pelicanul);
+
+function endGame() {
+    clearInterval(gameInterval);
+    clearInterval(moveInterval);
+    alert("Joc terminat! Scor final: " + score);
+}
+
+function restartGame() {
+    score = 0;
+    ammo = 20;
+    timeLeft = 30;
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("ammo").textContent = ammo;
+    document.getElementById("time").textContent = timeLeft;
+
+    clearInterval(gameInterval);
+    clearInterval(moveInterval);
+
+    startMovingTargets();
+    startGameTimer();
+}
+
+restartGame();
+</script>
+
+</body>
+</html>
