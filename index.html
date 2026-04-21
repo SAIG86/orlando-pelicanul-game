@@ -129,22 +129,57 @@ async function loadWeather(){wcity.textContent=city.name;try{const r=await fetch
 loadWeather();setInterval(loadWeather,600000);
 
 // NEWS
-const NCATS=[{k:'generale',l:'Generale',u:'https://www.digi24.ro/rss'},{k:'sport',l:'Sport',u:'https://www.gsp.ro/rss/index.xml'},{k:'politica',l:'Politică',u:'https://www.digi24.ro/rss/politica'},{k:'showbiz',l:'Showbiz',u:'https://www.cancan.ro/feed'}];
+const NCATS=[
+ {k:'generale',l:'Generale',u:['https://www.digi24.ro/rss','https://www.mediafax.ro/rss','https://www.gandul.ro/feed','https://www.realitatea.net/rss/news.xml','https://evz.ro/feed']},
+ {k:'sport',l:'Sport',u:['https://www.gsp.ro/rss/index.xml','https://www.prosport.ro/rss','https://www.digi24.ro/rss/sport']},
+ {k:'politica',l:'Politică',u:['https://www.digi24.ro/rss/politica','https://www.gandul.ro/politica/feed','https://www.mediafax.ro/politic/rss']},
+ {k:'showbiz',l:'Showbiz',u:['https://www.cancan.ro/feed','https://www.catavencii.ro/feed']}
+];
 let ncat='generale';
 function rNT(){ntabs.innerHTML=NCATS.map(c=>`<button onclick="sNC('${c.k}')" class="pill ${c.k===ncat?'pill-a':'pill-i'}">${c.l}</button>`).join('')}
 function sNC(k){ncat=k;rNT();loadNews()}
-async function loadNews(){nlist.innerHTML='<li class="text-white/40 text-sm">Se încarcă…</li>';const cat=NCATS.find(c=>c.k===ncat);try{const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(cat.u)}`);const d=await r.json();nlist.innerHTML=(d.items||[]).slice(0,15).map(n=>`<li><a href="${n.link}" target="_blank" class="group block"><p class="text-white/90 text-sm group-hover:text-white">${n.title} <span style="color:var(--ro-yellow)">↗</span></p><p class="text-white/40 text-[11px] mt-0.5">${d.feed.title||''}</p></a></li>`).join('')||'<li class="text-white/40 text-sm">Nicio știre.</li>'}catch{nlist.innerHTML='<li class="text-white/40 text-sm">Eroare.</li>'}}
+async function loadNews(){
+ nlist.innerHTML='<li class="text-white/40 text-sm">Se încarcă…</li>';
+ const cat=NCATS.find(c=>c.k===ncat);
+ try{
+  const results=await Promise.allSettled(cat.u.map(u=>fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}&count=8`).then(r=>r.json())));
+  let all=[];
+  for(const r of results){if(r.status==='fulfilled'&&r.value.items)for(const it of r.value.items)all.push({...it,src:r.value.feed?.title||''})}
+  all.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  const seen=new Set();all=all.filter(n=>{const t=n.title.toLowerCase();if(seen.has(t))return false;seen.add(t);return true}).slice(0,25);
+  nlist.innerHTML=all.length?all.map(n=>`<li><a href="${n.link}" target="_blank" class="group block"><p class="text-white/90 text-sm group-hover:text-white">${n.title} <span style="color:var(--ro-yellow)">↗</span></p><p class="text-white/40 text-[11px] mt-0.5">${n.src}</p></a></li>`).join(''):'<li class="text-white/40 text-sm">Nicio știre.</li>';
+ }catch{nlist.innerHTML='<li class="text-white/40 text-sm">Eroare.</li>'}
+}
 rNT();loadNews();
 
-// FOOTBALL
+// FOOTBALL (cu CORS proxy)
+const CORS='https://corsproxy.io/?';
 const LGS=[{k:'liga1_ro',l:'Liga 1 RO',iframe:true},{k:'PL',l:'Premier L.'},{k:'PD',l:'La Liga'},{k:'SA',l:'Serie A'},{k:'BL1',l:'Bundesliga'},{k:'FL1',l:'Ligue 1'}];
 const FTABS=[{k:'live',l:'Live'},{k:'past',l:'Rezultate'},{k:'standings',l:'Clasament'}];
 let flg='PL',ftb='past';
 function rFT(){flgs.innerHTML=LGS.map(l=>`<button onclick="sFL('${l.k}')" class="lpill ${l.k===flg?'lpill-a':'lpill-i'}">${l.l}</button>`).join('');ftabs.innerHTML=FTABS.map(t=>`<button onclick="sFT('${t.k}')" class="pill ${t.k===ftb?'pill-a':'pill-i'}">${t.l}</button>`).join('')}
 function sFL(k){flg=k;rFT();loadF()}
 function sFT(k){ftb=k;rFT();loadF()}
-async function fdG(p){const r=await fetch(`https://api.football-data.org/v4${p}`,{headers:{'X-Auth-Token':FD_KEY}});if(!r.ok)throw new Error('API: '+r.status);return r.json()}
-async function loadF(){fbody.innerHTML='<p class="text-white/40 text-sm">Se încarcă…</p>';if(flg==='liga1_ro'){fbody.innerHTML=`<iframe src="https://www.sofascore.com/tournament/152/season/63647/embed" width="100%" height="480" frameborder="0" scrolling="auto" style="border-radius:1rem;background:#fff" title="Liga 1 RO"></iframe><p class="text-white/40 text-[10px] mt-2">Liga 1 via Sofascore</p>`;return}try{if(ftb==='standings'){const d=await fdG(`/competitions/${flg}/standings`);const t=(d.standings.find(s=>s.type==='TOTAL')||{}).table||[];fbody.innerHTML=t.length?`<table class="w-full text-xs"><thead style="color:var(--ro-yellow)"><tr><th class="text-left py-1">#</th><th class="text-left">Echipă</th><th class="text-center">J</th><th class="text-center">GD</th><th class="text-right">P</th></tr></thead><tbody>${t.map(r=>`<tr class="border-t border-white/5"><td class="py-1.5 text-white/60">${r.position}</td><td class="text-white/90 truncate max-w-[120px]">${r.team.shortName||r.team.name}</td><td class="text-center text-white/70">${r.playedGames}</td><td class="text-center text-white/70">${r.goalDifference>0?'+':''}${r.goalDifference}</td><td class="text-right text-white font-semibold">${r.points}</td></tr>`).join('')}</tbody></table>`:'<p class="text-white/40 text-sm">Nu există clasament.</p>'}else{const td=new Date();const t0=new Date(td);t0.setDate(t0.getDate()-14);const status=ftb==='live'?'LIVE,IN_PLAY,PAUSED':'FINISHED';const dF=(ftb==='live'?td:t0).toISOString().slice(0,10);const dT=td.toISOString().slice(0,10);const d=await fdG(`/competitions/${flg}/matches?status=${status}&dateFrom=${dF}&dateTo=${dT}`);const ev=(d.matches||[]).slice(-20).reverse();fbody.innerHTML=ev.length?ev.map(m=>{const s=m.score.fullTime;const has=s.home!=null;return `<div class="flex items-center justify-between gap-2 py-2 border-b border-white/5"><div class="flex-1 min-w-0"><p class="text-white/90 text-sm truncate">${m.homeTeam.shortName||m.homeTeam.name}</p><p class="text-white/90 text-sm truncate">${m.awayTeam.shortName||m.awayTeam.name}</p></div><div class="text-right">${has?`<div class="fh font-medium leading-tight" style="color:var(--ro-yellow)"><div>${s.home}</div><div>${s.away}</div></div>`:`<div class="text-white/50 text-xs leading-tight"><div>${m.utcDate.slice(5,10)}</div><div>${m.utcDate.slice(11,16)}</div></div>`}</div>${ftb==='live'?'<div class="flex items-center gap-1 text-[10px] uppercase" style="color:var(--ro-red)"><span class="dot"></span>LIVE</div>':''}</div>`}).join(''):`<p class="text-white/40 text-sm">${ftb==='live'?'Nu sunt meciuri live acum.':'Nu există meciuri recente.'}</p>`}}catch(e){fbody.innerHTML='<p class="text-red-400 text-sm">Eroare: '+e.message+'</p>'}}
+async function fdG(p){const url=CORS+encodeURIComponent(`https://api.football-data.org/v4${p}`);const r=await fetch(url,{headers:{'X-Auth-Token':FD_KEY}});if(!r.ok)throw new Error('API '+r.status);return r.json()}
+async function loadF(){
+ fbody.innerHTML='<p class="text-white/40 text-sm">Se încarcă…</p>';
+ if(flg==='liga1_ro'){fbody.innerHTML=`<iframe src="https://www.sofascore.com/tournament/152/season/63647/embed" width="100%" height="480" frameborder="0" style="border-radius:1rem;background:#fff"></iframe>`;return}
+ try{
+  if(ftb==='standings'){
+   const d=await fdG(`/competitions/${flg}/standings`);
+   const t=(d.standings.find(s=>s.type==='TOTAL')||{}).table||[];
+   fbody.innerHTML=t.length?`<table class="w-full text-xs"><thead style="color:var(--ro-yellow)"><tr><th class="text-left py-1">#</th><th class="text-left">Echipă</th><th class="text-center">J</th><th class="text-center">GD</th><th class="text-right">P</th></tr></thead><tbody>${t.map(r=>`<tr class="border-t border-white/5"><td class="py-1.5 text-white/60">${r.position}</td><td class="text-white/90 truncate max-w-[120px]">${r.team.shortName||r.team.name}</td><td class="text-center text-white/70">${r.playedGames}</td><td class="text-center text-white/70">${r.goalDifference>0?'+':''}${r.goalDifference}</td><td class="text-right text-white font-semibold">${r.points}</td></tr>`).join('')}</tbody></table>`:'<p class="text-white/40 text-sm">Nu există clasament.</p>';
+  }else{
+   const td=new Date();const t0=new Date(td);t0.setDate(t0.getDate()-21);const t2=new Date(td);t2.setDate(t2.getDate()+7);
+   const status=ftb==='live'?'LIVE,IN_PLAY,PAUSED':'FINISHED';
+   const dF=(ftb==='live'?td:t0).toISOString().slice(0,10);
+   const dT=(ftb==='live'?t2:td).toISOString().slice(0,10);
+   const d=await fdG(`/competitions/${flg}/matches?status=${status}&dateFrom=${dF}&dateTo=${dT}`);
+   const ev=(d.matches||[]).slice(-20).reverse();
+   fbody.innerHTML=ev.length?ev.map(m=>{const s=m.score.fullTime;const has=s.home!=null;return `<div class="flex items-center justify-between gap-2 py-2 border-b border-white/5"><div class="flex-1 min-w-0"><p class="text-white/90 text-sm truncate">${m.homeTeam.shortName||m.homeTeam.name}</p><p class="text-white/90 text-sm truncate">${m.awayTeam.shortName||m.awayTeam.name}</p></div><div class="text-right">${has?`<div class="fh font-medium leading-tight" style="color:var(--ro-yellow)"><div>${s.home}</div><div>${s.away}</div></div>`:`<div class="text-white/50 text-xs leading-tight"><div>${m.utcDate.slice(5,10)}</div><div>${m.utcDate.slice(11,16)}</div></div>`}</div>${ftb==='live'?'<div class="flex items-center gap-1 text-[10px] uppercase" style="color:var(--ro-red)"><span class="dot"></span>LIVE</div>':''}</div>`}).join(''):`<p class="text-white/40 text-sm">${ftb==='live'?'Nu sunt meciuri live acum.':'Nu există meciuri.'}</p>`;
+  }
+ }catch(e){fbody.innerHTML='<p class="text-red-400 text-sm">Eroare: '+e.message+'. Încearcă peste 30s.</p>'}
+}
 rFT();loadF();
 
 // HOROSCOPE
@@ -155,7 +190,7 @@ let zsel=null,ztab='daily';
 function rZG(){zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-2xl" style="color:${zsel===z.k?'var(--ro-yellow)':'#60a5fa'}">${z.e}</div><div class="text-[10px] text-white/80 mt-0.5">${z.l}</div></button>`).join('');ztabs.innerHTML=zsel?ZTABS.map(t=>`<button onclick="sZT('${t.k}')" class="pill ${t.k===ztab?'pill-a':'pill-i'}">${t.l}</button>`).join(''):''}
 function sZ(k){zsel=k;ztab='daily';rZG();loadZ()}
 function sZT(k){ztab=k;rZG();loadZ()}
-async function loadZ(){if(!zsel)return;const z=ZS.find(x=>x.k===zsel);zbody.innerHTML=`<div class="mb-2"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-sm">Se încarcă…</p>`;try{if(ztab==='yearly'){zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">Horoscop anual</p><p class="text-white/90 text-sm leading-relaxed">${YEAR_RO[zsel]}</p>`;return}const ep=ztab==='daily'?'daily':ztab==='weekly'?'weekly':'monthly';const param=ztab==='daily'?'&day=TODAY':'';const r=await fetch(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/${ep}?sign=${zsel}${param}`);const d=await r.json();const txt=d.data?.horoscope_data||'Nedisponibil';const date=d.data?.date||d.data?.week||d.data?.month||'';zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">${ZTABS.find(t=>t.k===ztab).l} · ${date}</p><p class="text-white/90 text-sm leading-relaxed">${txt}</p><p class="text-white/30 text-[10px] mt-3 italic">Sursă: horoscope API (engleză, traducere automată recomandată)</p>`}catch{zbody.innerHTML='<p class="text-red-400 text-sm">Eroare la încărcare.</p>'}}
+async function loadZ(){if(!zsel)return;const z=ZS.find(x=>x.k===zsel);zbody.innerHTML=`<div class="mb-2"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-sm">Se încarcă…</p>`;try{if(ztab==='yearly'){zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">Horoscop anual</p><p class="text-white/90 text-sm leading-relaxed">${YEAR_RO[zsel]}</p>`;return}const ep=ztab==='daily'?'daily':ztab==='weekly'?'weekly':'monthly';const param=ztab==='daily'?'&day=TODAY':'';const r=await fetch(CORS+encodeURIComponent(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/${ep}?sign=${zsel}${param}`));const d=await r.json();const txt=d.data?.horoscope_data||'Nedisponibil';const date=d.data?.date||d.data?.week||d.data?.month||'';zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">${ZTABS.find(t=>t.k===ztab).l} · ${date}</p><p class="text-white/90 text-sm leading-relaxed">${txt}</p><p class="text-white/30 text-[10px] mt-3 italic">Sursă: horoscope API (engleză, traducere automată recomandată)</p>`}catch{zbody.innerHTML='<p class="text-red-400 text-sm">Eroare la încărcare.</p>'}}
 rZG();
 
 // QUOTE
