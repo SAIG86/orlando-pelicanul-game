@@ -3,34 +3,22 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Dashboard Personal</title>
+<title>Tot la zi</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 :root{--ro-blue:#002B7F;--ro-yellow:#FCD116;--ro-red:#CE1126}
 body{margin:0;background:#060a1a;color:#fff;font-family:'Manrope',sans-serif;min-height:100vh;overflow-x:hidden}
 .fh{font-family:'Outfit',sans-serif}
-.gc{position:relative;overflow:hidden;background:rgba(255,255,255,.03);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.1);border-radius:2rem;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:.3s}
-.gc:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2)}
+.gc{position:relative;overflow:hidden;background:rgba(255,255,255,.03);backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.1);border-radius:2rem;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:.3s}
 .gc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--ro-blue) 0%,var(--ro-yellow) 50%,var(--ro-red) 100%);opacity:.7}
 .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,43,127,.4) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(206,17,38,.3) 0%,transparent 50%),#060a1a}
-.dot{width:8px;height:8px;border-radius:999px;background:var(--ro-red);animation:lp 1.4s infinite}
-@keyframes lp{0%{box-shadow:0 0 0 0 rgba(206,17,38,.8)}70%{box-shadow:0 0 0 10px rgba(206,17,38,0)}100%{box-shadow:0 0 0 0 rgba(206,17,38,0)}}
 .ss::-webkit-scrollbar{width:6px}.ss::-webkit-scrollbar-thumb{background:rgba(252,209,22,.3);border-radius:999px}
-@keyframes ri{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.ri{animation:ri .7s cubic-bezier(.4,0,.2,1) both}
 .pill{padding:.35rem .8rem;border-radius:999px;font-size:.75rem;font-weight:500;transition:.2s;cursor:pointer;border:none}
 .pill-a{background:var(--ro-yellow);color:#000}
 .pill-i{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
-.pill-i:hover{background:rgba(0,43,127,.4);color:#fff}
-.lpill{font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:.3rem .7rem;border-radius:999px;font-weight:700;cursor:pointer;border:none;transition:.2s}
-.lpill-a{background:var(--ro-red);color:#fff}
-.lpill-i{background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)}
-.lpill-i:hover{background:rgba(0,43,127,.4);color:#fff}
 .zbtn{padding:.4rem;border-radius:.75rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:.2s;text-align:center}
-.zbtn:hover{background:rgba(252,209,22,.15);border-color:var(--ro-yellow)}
 .zbtn-a{background:linear-gradient(135deg,var(--ro-blue),var(--ro-red));border-color:var(--ro-yellow);color:#fff}
-input:focus{outline:none}
 </style>
 </head>
 <body>
@@ -38,73 +26,55 @@ input:focus{outline:none}
 <div class="relative z-10 w-full min-h-screen p-4 md:p-8">
 <div class="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
 
-<div class="md:col-span-8 ri">
+<div class="md:col-span-8">
 <div class="gc p-6 md:p-10 h-full flex flex-col justify-center pl-8">
-<p class="text-white/60 text-sm uppercase tracking-[.25em]" id="greet">Bună</p>
-<div class="fh font-light tracking-tighter leading-none mt-2" style="font-size:clamp(4rem,12vw,10rem)"><span id="hh" class="text-white">--</span><span style="color:var(--ro-yellow)">:</span><span id="mm" class="text-white">--</span><span class="text-4xl md:text-5xl align-top ml-2" style="color:var(--ro-red)" id="ss">--</span></div>
-<p class="mt-2 text-white/80 text-lg md:text-2xl fh font-light" id="dt">...</p>
+<p class="text-white/60 text-sm uppercase tracking-[.25em]" id="greet">Salut</p>
+<div class="fh font-light tracking-tighter leading-none mt-2" style="font-size:clamp(4rem,12vw,10rem)"><span id="hh">--</span><span style="color:var(--ro-yellow)">:</span><span id="mm">--</span><span class="text-4xl align-top ml-2" style="color:var(--ro-red)" id="ss">--</span></div>
+<p class="mt-2 text-white/80 text-lg md:text-2xl" id="dt">...</p>
 </div>
 </div>
 
-<div class="md:col-span-4 ri">
+<div class="md:col-span-4">
 <div class="gc p-6 pl-8 h-full flex flex-col">
-<div class="flex items-center justify-between">
-<div class="text-white/70 text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">📍 Vremea</div>
-<button onclick="ws.classList.toggle('hidden')" class="text-white/50 hover:text-white text-xs px-2 py-1 rounded-full hover:bg-white/10">🔍 Alege oraș</button>
+<div class="text-white/70 text-xs uppercase tracking-widest mb-4" style="color:var(--ro-yellow)">📍 Vremea</div>
+<div id="wcity" class="text-xl font-medium">București</div>
+<div class="flex items-end gap-3 mt-2">
+<span class="text-6xl font-light text-blue-400" id="wtemp">--</span><span class="text-2xl mb-2">°C</span>
+<span id="wico" class="text-4xl ml-auto">☁️</span>
 </div>
-<div id="ws" class="hidden mt-3 space-y-2">
-<div class="flex gap-2"><input id="wsi" placeholder="Caută oraș..." class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/40"/><button onclick="searchCity()" class="bg-white text-black text-sm px-4 py-2 rounded-full font-medium">Caută</button></div>
-<ul id="wsr" class="space-y-1 max-h-40 overflow-auto ss"></ul>
-</div>
-<div class="mt-4 flex items-start justify-between">
-<div><p class="text-white text-xl fh font-medium" id="wcity">București</p><p class="text-white/50 text-xs mt-0.5" id="wdesc">—</p></div>
-<div class="text-4xl" id="wico">☁️</div>
-</div>
-<div class="mt-2 flex items-end gap-3"><span class="fh font-light text-6xl md:text-7xl leading-none" style="color:#60a5fa" id="wtemp">--</span><span class="text-white/60 text-2xl mb-2 fh">°C</span></div>
-<div class="mt-2 flex gap-4 text-white/60 text-xs" id="wmeta"></div>
+<div id="wdesc" class="text-white/50 text-sm mt-1">Se încarcă...</div>
 <div class="mt-4 pt-4 border-t border-white/10 flex gap-3 overflow-x-auto ss" id="whourly"></div>
 </div>
 </div>
 
-<div class="md:col-span-4 ri">
+<div class="md:col-span-4">
 <div class="gc p-6 pl-8 h-full flex flex-col">
-<div class="text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">📰 Știri</div>
-<div class="mt-3 flex flex-wrap gap-1.5" id="ntabs"></div>
-<ul id="nlist" class="mt-4 space-y-3 max-h-[360px] overflow-y-auto ss pr-1"></ul>
+<div class="text-xs uppercase tracking-widest mb-3" style="color:var(--ro-yellow)">📰 Știri Proaspete</div>
+<div class="flex flex-wrap gap-1.5 mb-4" id="ntabs"></div>
+<ul id="nlist" class="space-y-3 max-h-[400px] overflow-y-auto ss pr-2"></ul>
 </div>
 </div>
 
-<div class="md:col-span-4 ri">
+<div class="md:col-span-4">
 <div class="gc p-6 pl-8 h-full flex flex-col">
-<div class="flex items-center justify-between"><div class="text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">🏆 Fotbal</div></div>
-<div class="mt-3 flex flex-wrap gap-1" id="flgs"></div>
-<div class="mt-3 flex gap-1.5" id="ftabs"></div>
-<div class="mt-4 max-h-[360px] overflow-y-auto ss pr-1" id="fbody"></div>
+<div class="text-xs uppercase tracking-widest mb-3" style="color:var(--ro-yellow)">🏆 Fotbal</div>
+<div class="flex flex-wrap gap-1 mb-3" id="flgs"></div>
+<div class="flex gap-1.5 mb-4" id="ftabs"></div>
+<div id="fbody" class="max-h-[400px] overflow-y-auto ss pr-2"></div>
 </div>
 </div>
 
-<div class="md:col-span-4 ri">
+<div class="md:col-span-4">
 <div class="gc p-6 pl-8 h-full flex flex-col">
-<div class="text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">✨ Horoscop</div>
-<div class="mt-3 grid grid-cols-4 gap-1.5" id="zgrid"></div>
-<div class="mt-3 flex gap-1.5 flex-wrap" id="ztabs"></div>
-<div class="mt-3 overflow-y-auto ss pr-1 max-h-[260px]" id="zbody"><p class="text-white/40 text-sm">Alege o zodie ↑</p></div>
-</div>
-</div>
-
-<div class="md:col-span-12 ri">
-<div class="gc p-8 md:p-10 pl-10 relative overflow-hidden">
-<div class="absolute -top-4 -left-4 text-[10rem] leading-none opacity-[.06]" style="color:var(--ro-yellow)">"</div>
-<div class="relative z-10">
-<p class="text-xs uppercase tracking-[.25em]" style="color:var(--ro-yellow)">Citatul zilei</p>
-<p class="mt-3 fh font-light text-white/95 text-2xl md:text-3xl italic leading-snug max-w-4xl" id="qtext">...</p>
-<p class="mt-3 text-sm" style="color:#60a5fa" id="qauthor"></p>
-</div>
+<div class="text-xs uppercase tracking-widest mb-3" style="color:var(--ro-yellow)">✨ Zodiac</div>
+<div class="grid grid-cols-4 gap-1.5 mb-4" id="zgrid"></div>
+<div class="flex gap-1.5 flex-wrap mb-4" id="ztabs"></div>
+<div id="zbody" class="max-h-[300px] overflow-y-auto ss pr-2 text-sm text-white/80 italic">Alege o zodie...</div>
 </div>
 </div>
 
 </div>
-<p class="mx-auto max-w-7xl mt-8 text-center text-white/40 text-xs">🇷🇴 Dash v2.1 · AllOrigins Proxy · football-data.org</p>
+<p class="mx-auto max-w-7xl mt-8 text-center text-white/40 text-xs">🇷🇴 Tot la zi v2.5 · Multi-Source RSS · AllOrigins Proxy</p>
 </div>
 
 <script>
@@ -112,79 +82,94 @@ const FD_KEY='000f99b342a747abbefc9eb7ce8ee6ca';
 const PROXY = 'https://api.allorigins.win/raw?url=';
 
 // CLOCK
-const W=["Duminică","Luni","Marți","Miercuri","Joi","Vineri","Sâmbătă"];
-const M=["Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie","Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie"];
-function tick(){const n=new Date();hh.textContent=String(n.getHours()).padStart(2,'0');mm.textContent=String(n.getMinutes()).padStart(2,'0');ss.textContent=String(n.getSeconds()).padStart(2,'0');const h=n.getHours();greet.textContent=h<5?"Noapte bună":h<12?"Bună dimineața":h<18?"Bună ziua":h<22?"Bună seara":"Noapte bună";dt.textContent=`${W[n.getDay()]}, ${n.getDate()} ${M[n.getMonth()]} ${n.getFullYear()}`}
-setInterval(tick,1000);tick();
+setInterval(()=>{
+    const n=new Date();
+    hh.textContent=String(n.getHours()).padStart(2,'0');
+    mm.textContent=String(n.getMinutes()).padStart(2,'0');
+    ss.textContent=String(n.getSeconds()).padStart(2,'0');
+    dt.textContent=n.toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long'});
+},1000);
 
 // WEATHER
-const WICO={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',75:'❄️',80:'🌧️',82:'⛈️',95:'⛈️'};
-const W2W={"113":0,"116":2,"119":3,"122":3,"143":45,"176":51,"200":95,"227":71,"248":48,"263":51,"266":51,"281":56,"293":61,"296":61,"299":63,"302":63,"305":65,"308":65,"323":71,"326":73,"329":73,"332":75,"335":75,"353":80,"356":81,"359":82,"386":95,"389":96,"395":99};
-const WD={0:'Senin',2:'Parțial noros',3:'Noros',45:'Ceață',51:'Burniță',61:'Ploaie',63:'Ploaie',65:'Ploaie',71:'Ninsoare',75:'Ninsoare',80:'Ploaie',95:'Furtună'};
-let city=JSON.parse(localStorage.getItem('dc')||'null')||{name:'București',lat:44.4268,lon:26.1025};
-function setCity(n,lat,lon){city={name:n,lat:lat,lon:lon};localStorage.setItem('dc',JSON.stringify(city));ws.classList.add('hidden');wsr.innerHTML='';loadWeather()}
-async function searchCity(){const q=wsi.value.trim();if(!q)return;try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=ro`);const d=await r.json();wsr.innerHTML=(d.results||[]).map(x=>`<li><button onclick="setCity('${x.name.replace(/'/g,'')}',${x.latitude},${x.longitude})" class="w-full text-left text-sm px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">${x.name} <span class="text-white/40">· ${x.admin1||''} ${x.country}</span></button></li>`).join('')}catch{}}
-async function loadWeather(){wcity.textContent=city.name;try{const r=await fetch(`https://wttr.in/${city.lat},${city.lon}?format=j1`);const d=await r.json();const cc=d.current_condition[0];const code=W2W[cc.weatherCode]||3;wtemp.textContent=Math.round(cc.temp_C);wico.textContent=WICO[code]||'☁️';wdesc.textContent=WD[code]||cc.weatherDesc[0].value;wmeta.innerHTML=`<span>💧 ${cc.humidity}%</span><span>💨 ${Math.round(cc.windspeedKmph)} km/h</span>`;const now=new Date();const nh=now.getHours();const td=now.toISOString().slice(0,10);const hours=[];for(const day of d.weather.slice(0,2)){for(const h of day.hourly){const hi=parseInt(h.time)/100;if(day.date>td||(day.date===td&&hi>=nh))hours.push({t:`${String(hi).padStart(2,'0')}:00`,tp:Math.round(h.tempC),c:W2W[h.weatherCode]||3});if(hours.length>=8)break}if(hours.length>=8)break}whourly.innerHTML=hours.map(h=>`<div class="flex flex-col items-center gap-1 min-w-[48px]"><span class="text-white/40 text-[10px]">${h.t}</span><span class="text-lg">${WICO[h.c]||'☁️'}</span><span class="text-white text-sm font-medium">${h.tp}°</span></div>`).join('')}catch{}}
-loadWeather();setInterval(loadWeather,600000);
+async function loadWeather(){
+    try{
+        const r=await fetch(`https://wttr.in/Bucuresti?format=j1`);
+        const d=await r.json();
+        const cc=d.current_condition[0];
+        wtemp.textContent=cc.temp_C;
+        wdesc.textContent=cc.weatherDesc[0].value;
+        wico.textContent="☀️"; 
+    }catch(e){}
+}
+loadWeather();
 
-// NEWS
+// NEWS (Multi-Source)
 const NCATS=[
- {k:'generale',l:'Generale',u:['https://www.digi24.ro/rss','https://evz.ro/feed']},
- {k:'sport',l:'Sport',u:['https://www.gsp.ro/rss/index.xml','https://www.prosport.ro/rss']},
- {k:'politica',l:'Politică',u:['https://www.digi24.ro/rss/politica','https://www.mediafax.ro/politic/rss']},
- {k:'showbiz',l:'Showbiz',u:['https://www.cancan.ro/feed']}
+    {k:'gen',l:'General',u:['https://www.digi24.ro/rss','https://www.hotnews.ro/rss','https://www.libertatea.ro/feed','https://www.news.ro/rss']},
+    {k:'sport',l:'Sport',u:['https://www.gsp.ro/rss/index.xml','https://www.prosport.ro/rss','https://www.fanatik.ro/sport/feed']}
 ];
-let ncat='generale';
+let ncat='gen';
 function rNT(){ntabs.innerHTML=NCATS.map(c=>`<button onclick="sNC('${c.k}')" class="pill ${c.k===ncat?'pill-a':'pill-i'}">${c.l}</button>`).join('')}
 function sNC(k){ncat=k;rNT();loadNews()}
 async function loadNews(){
- nlist.innerHTML='<li class="text-white/40 text-sm">Se încarcă…</li>';
- const cat=NCATS.find(c=>c.k===ncat);
- try{
-  const results=await Promise.allSettled(cat.u.map(u=>fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}`).then(r=>r.json())));
-  let all=[];
-  for(const r of results){if(r.status==='fulfilled'&&r.value.items)for(const it of r.value.items)all.push({...it,src:r.value.feed?.title||''})}
-  all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
-  nlist.innerHTML=all.slice(0,20).map(n=>`<li><a href="${n.link}" target="_blank" class="group block"><p class="text-white/90 text-sm group-hover:text-white">${n.title} <span style="color:var(--ro-yellow)">↗</span></p><p class="text-white/40 text-[11px] mt-0.5">${n.src}</p></a></li>`).join('')||'<li>Nicio știre.</li>';
- }catch{nlist.innerHTML='<li>Eroare știri.</li>'}
+    nlist.innerHTML='<li class="text-sm opacity-50">Se caută știri...</li>';
+    const cat=NCATS.find(c=>c.k===ncat);
+    let allNews=[];
+    for(let url of cat.u){
+        try{
+            const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+            const d=await r.json();
+            if(d.items) allNews = [...allNews, ...d.items.map(i=>({...i, s: d.feed.title}))];
+        }catch(e){}
+    }
+    allNews.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
+    nlist.innerHTML=allNews.slice(0,25).map(n=>`<li><a href="${n.link}" target="_blank" class="block group"><p class="text-sm group-hover:text-yellow-400 transition">${n.title}</p><p class="text-[10px] opacity-40 uppercase mt-1">${n.s}</p></a></li>`).join('');
 }
 rNT();loadNews();
 
 // FOOTBALL
-const LGS=[{k:'liga1_ro',l:'Liga 1 RO'},{k:'PL',l:'Premier L.'},{k:'PD',l:'La Liga'},{k:'SA',l:'Serie A'},{k:'BL1',l:'Bundesliga'}];
-const FTABS=[{k:'live',l:'Live'},{k:'past',l:'Rezultate'},{k:'standings',l:'Clasament'}];
+const LGS=[{k:'PL',l:'Anglia'},{k:'PD',l:'Spania'},{k:'SA',l:'Italia'},{k:'BL1',l:'Germania'}];
+const FTABS=[{k:'past',l:'Rezultate'},{k:'standings',l:'Clasament'}];
 let flg='PL',ftb='past';
-function rFT(){flgs.innerHTML=LGS.map(l=>`<button onclick="sFL('${l.k}')" class="lpill ${l.k===flg?'lpill-a':'lpill-i'}">${l.l}</button>`).join('');ftabs.innerHTML=FTABS.map(t=>`<button onclick="sFT('${t.k}')" class="pill ${t.k===ftb?'pill-a':'pill-i'}">${t.l}</button>`).join('')}
+function rFT(){
+    flgs.innerHTML=LGS.map(l=>`<button onclick="sFL('${l.k}')" class="pill ${l.k===flg?'pill-a':'pill-i'}">${l.l}</button>`).join('');
+    ftabs.innerHTML=FTABS.map(t=>`<button onclick="sFT('${t.k}')" class="pill ${t.k===ftb?'pill-a':'pill-i'}">${t.l}</button>`).join('');
+}
 function sFL(k){flg=k;rFT();loadF()}
 function sFT(k){ftb=k;rFT();loadF()}
-async function fdG(p){const r=await fetch(PROXY+encodeURIComponent(`https://api.football-data.org/v4${p}`),{headers:{'X-Auth-Token':FD_KEY}});return r.json()}
 async function loadF(){
- fbody.innerHTML='<p class="text-white/40 text-sm">Se încarcă…</p>';
- if(flg==='liga1_ro'){fbody.innerHTML=`<iframe src="https://www.sofascore.com/tournament/152/season/63647/embed" width="100%" height="400" frameborder="0"></iframe>`;return}
- try{
-  if(ftb==='standings'){
-   const d=await fdG(`/competitions/${flg}/standings`);
-   const t=d.standings[0].table;
-   fbody.innerHTML=`<table class="w-full text-xs"><tbody>${t.map(r=>`<tr class="border-b border-white/5"><td class="py-1">${r.position}</td><td>${r.team.shortName}</td><td class="text-right font-bold">${r.points}p</td></tr>`).join('')}</tbody></table>`;
-  }else{
-   const d=await fdG(`/competitions/${flg}/matches?status=${ftb==='live'?'IN_PLAY':'FINISHED'}`);
-   const ev=(d.matches||[]).slice(-15).reverse();
-   fbody.innerHTML=ev.length?ev.map(m=>`<div class="py-2 border-b border-white/5 flex justify-between text-sm"><span>${m.homeTeam.shortName} - ${m.awayTeam.shortName}</span><span style="color:var(--ro-yellow)">${m.score.fullTime.home}:${m.score.fullTime.away}</span></div>`).join(''):'Fără meciuri.';
-  }
- }catch{fbody.innerHTML='Eroare date fotbal.';}
+    fbody.innerHTML='...';
+    try{
+        const r=await fetch(PROXY+encodeURIComponent(`https://api.football-data.org/v4/competitions/${flg}/${ftb==='standings'?'standings':'matches?status=FINISHED'}`),{headers:{'X-Auth-Token':FD_KEY}});
+        const d=await r.json();
+        if(ftb==='standings'){
+            fbody.innerHTML=`<table class="w-full text-xs">` + d.standings[0].table.map(t=>`<tr class="border-b border-white/5"><td class="py-1">${t.position}</td><td>${t.team.shortName}</td><td class="text-right font-bold">${t.points}</td></tr>`).join('') + `</table>`;
+        } else {
+            fbody.innerHTML=d.matches.slice(-15).reverse().map(m=>`<div class="text-xs py-1 border-b border-white/5 flex justify-between"><span>${m.homeTeam.shortName}-${m.awayTeam.shortName}</span><span class="text-yellow-400 font-bold">${m.score.fullTime.home}:${m.score.fullTime.away}</span></div>`).join('');
+        }
+    }catch(e){fbody.innerHTML="Eroare API Fotbal";}
 }
 rFT();loadF();
 
 // HOROSCOPE
 const ZS=[{k:'Aries',l:'Berbec',e:'♈'},{k:'Taurus',l:'Taur',e:'♉'},{k:'Gemini',l:'Gemeni',e:'♊'},{k:'Cancer',l:'Rac',e:'♋'},{k:'Leo',l:'Leu',e:'♌'},{k:'Virgo',l:'Fecioară',e:'♍'},{k:'Libra',l:'Balanță',e:'♎'},{k:'Scorpio',l:'Scorpion',e:'♏'},{k:'Sagittarius',l:'Săgetător',e:'♐'},{k:'Capricorn',l:'Capricorn',e:'♑'},{k:'Aquarius',l:'Vărsător',e:'♒'},{k:'Pisces',l:'Pești',e:'♓'}];
-let zsel=null;
-function rZG(){zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-2xl">${z.e}</div><div class="text-[10px]">${z.l}</div></button>`).join('')}
-async function sZ(k){zsel=k;rZG();zbody.innerHTML='Încărcare...';try{const r=await fetch(PROXY+encodeURIComponent(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${k}&day=TODAY`));const d=await r.json();zbody.innerHTML=`<p class="text-sm leading-relaxed">${d.data.horoscope_data}</p>`;}catch{zbody.innerHTML='Eroare horoscop.';}}
+const ZT=['daily','weekly','monthly','yearly'];
+let zsel=null, zt='daily';
+function rZG(){
+    zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-xl">${z.e}</div><div class="text-[9px]">${z.l}</div></button>`).join('');
+    ztabs.innerHTML=ZT.map(t=>`<button onclick="sZT('${t}')" class="pill ${zt===t?'pill-a':'pill-i'}">${t}</button>`).join('');
+}
+function sZ(k){zsel=k;loadZ()}
+function sZT(k){zt=k;loadZ()}
+async function loadZ(){
+    if(!zsel) return; rZG(); zbody.innerHTML="Se citește în stele...";
+    try{
+        const r=await fetch(PROXY+encodeURIComponent(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/${zt}?sign=${zsel}${zt==='daily'?'&day=TODAY':''}`));
+        const d=await r.json();
+        zbody.innerHTML=d.data.horoscope_data;
+    }catch(e){zbody.innerHTML="Eroare Zodiac";}
+}
 rZG();
-
-// QUOTE
-const QS=[{q:"Succesul nu este final, eșecul nu este fatal.",a:"W. Churchill"},{q:"Fii schimbarea pe care vrei să o vezi în lume.",a:"Ghandi"}];
-const qq=QS[Math.floor(Math.random()*QS.length)];qtext.textContent=`„${qq.q}"`;qauthor.textContent=`— ${qq.a}`;
 </script>
 </body>
 </html>
