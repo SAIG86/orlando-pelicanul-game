@@ -31,7 +31,6 @@ body{margin:0;background:#060a1a;color:#fff;font-family:'Manrope',sans-serif;min
 .zbtn:hover{background:rgba(252,209,22,.15);border-color:var(--ro-yellow)}
 .zbtn-a{background:linear-gradient(135deg,var(--ro-blue),var(--ro-red));border-color:var(--ro-yellow);color:#fff}
 input:focus{outline:none}
-.tc{background:linear-gradient(90deg,var(--ro-blue),var(--ro-yellow),var(--ro-red));-webkit-background-clip:text;background-clip:text;color:transparent}
 </style>
 </head>
 <body>
@@ -55,7 +54,6 @@ input:focus{outline:none}
 </div>
 <div id="ws" class="hidden mt-3 space-y-2">
 <div class="flex gap-2"><input id="wsi" placeholder="Caută oraș..." class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/40"/><button onclick="searchCity()" class="bg-white text-black text-sm px-4 py-2 rounded-full font-medium">Caută</button></div>
-<div class="flex flex-wrap gap-2"><button onclick="setCity('București',44.4268,26.1025)" class="text-xs px-3 py-1 rounded-full bg-white/5 hover:bg-white/15 text-white/80">București</button><button onclick="setCity('Pantelimon',44.4497,26.2103)" class="text-xs px-3 py-1 rounded-full bg-white/5 hover:bg-white/15 text-white/80">Pantelimon</button></div>
 <ul id="wsr" class="space-y-1 max-h-40 overflow-auto ss"></ul>
 </div>
 <div class="mt-4 flex items-start justify-between">
@@ -106,11 +104,12 @@ input:focus{outline:none}
 </div>
 
 </div>
-<p class="mx-auto max-w-7xl mt-8 text-center text-white/40 text-xs">🇷🇴 wttr.in · Open-Meteo · football-data.org · Sofascore · Digi24/GSP/Cancan · Horoscope API</p>
+<p class="mx-auto max-w-7xl mt-8 text-center text-white/40 text-xs">🇷🇴 Dash v2.1 · AllOrigins Proxy · football-data.org</p>
 </div>
 
 <script>
 const FD_KEY='000f99b342a747abbefc9eb7ce8ee6ca';
+const PROXY = 'https://api.allorigins.win/raw?url=';
 
 // CLOCK
 const W=["Duminică","Luni","Marți","Miercuri","Joi","Vineri","Sâmbătă"];
@@ -124,16 +123,16 @@ const W2W={"113":0,"116":2,"119":3,"122":3,"143":45,"176":51,"200":95,"227":71,"
 const WD={0:'Senin',2:'Parțial noros',3:'Noros',45:'Ceață',51:'Burniță',61:'Ploaie',63:'Ploaie',65:'Ploaie',71:'Ninsoare',75:'Ninsoare',80:'Ploaie',95:'Furtună'};
 let city=JSON.parse(localStorage.getItem('dc')||'null')||{name:'București',lat:44.4268,lon:26.1025};
 function setCity(n,lat,lon){city={name:n,lat:lat,lon:lon};localStorage.setItem('dc',JSON.stringify(city));ws.classList.add('hidden');wsr.innerHTML='';loadWeather()}
-async function searchCity(){const q=wsi.value.trim();if(!q)return;try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=ro`);const d=await r.json();wsr.innerHTML=(d.results||[]).map(x=>`<li><button onclick="setCity('${x.name.replace(/'/g,'')}',${x.latitude},${x.longitude})" class="w-full text-left text-sm px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">${x.name} <span class="text-white/40">· ${x.admin1||''} ${x.country}</span></button></li>`).join('')}catch{wsr.innerHTML='<li class="text-white/40 text-sm">Eroare</li>'}}
-async function loadWeather(){wcity.textContent=city.name;try{const r=await fetch(`https://wttr.in/${city.lat},${city.lon}?format=j1`);const d=await r.json();const cc=d.current_condition[0];const code=W2W[cc.weatherCode]||3;wtemp.textContent=Math.round(cc.temp_C);wico.textContent=WICO[code]||'☁️';wdesc.textContent=WD[code]||cc.weatherDesc[0].value;wmeta.innerHTML=`<span>💧 ${cc.humidity}%</span><span>💨 ${Math.round(cc.windspeedKmph)} km/h</span><span>Resimțit ${Math.round(cc.FeelsLikeC)}°</span>`;const now=new Date();const nh=now.getHours();const td=now.toISOString().slice(0,10);const hours=[];for(const day of d.weather.slice(0,2)){for(const h of day.hourly){const hi=parseInt(h.time)/100;if(day.date>td||(day.date===td&&hi>=nh))hours.push({t:`${String(hi).padStart(2,'0')}:00`,tp:Math.round(h.tempC),c:W2W[h.weatherCode]||3});if(hours.length>=8)break}if(hours.length>=8)break}whourly.innerHTML=hours.map(h=>`<div class="flex flex-col items-center gap-1 min-w-[48px]"><span class="text-white/40 text-[10px]">${h.t}</span><span class="text-lg">${WICO[h.c]||'☁️'}</span><span class="text-white text-sm font-medium">${h.tp}°</span></div>`).join('')}catch{wtemp.textContent='--';wdesc.textContent='Eroare'}}
+async function searchCity(){const q=wsi.value.trim();if(!q)return;try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=ro`);const d=await r.json();wsr.innerHTML=(d.results||[]).map(x=>`<li><button onclick="setCity('${x.name.replace(/'/g,'')}',${x.latitude},${x.longitude})" class="w-full text-left text-sm px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">${x.name} <span class="text-white/40">· ${x.admin1||''} ${x.country}</span></button></li>`).join('')}catch{}}
+async function loadWeather(){wcity.textContent=city.name;try{const r=await fetch(`https://wttr.in/${city.lat},${city.lon}?format=j1`);const d=await r.json();const cc=d.current_condition[0];const code=W2W[cc.weatherCode]||3;wtemp.textContent=Math.round(cc.temp_C);wico.textContent=WICO[code]||'☁️';wdesc.textContent=WD[code]||cc.weatherDesc[0].value;wmeta.innerHTML=`<span>💧 ${cc.humidity}%</span><span>💨 ${Math.round(cc.windspeedKmph)} km/h</span>`;const now=new Date();const nh=now.getHours();const td=now.toISOString().slice(0,10);const hours=[];for(const day of d.weather.slice(0,2)){for(const h of day.hourly){const hi=parseInt(h.time)/100;if(day.date>td||(day.date===td&&hi>=nh))hours.push({t:`${String(hi).padStart(2,'0')}:00`,tp:Math.round(h.tempC),c:W2W[h.weatherCode]||3});if(hours.length>=8)break}if(hours.length>=8)break}whourly.innerHTML=hours.map(h=>`<div class="flex flex-col items-center gap-1 min-w-[48px]"><span class="text-white/40 text-[10px]">${h.t}</span><span class="text-lg">${WICO[h.c]||'☁️'}</span><span class="text-white text-sm font-medium">${h.tp}°</span></div>`).join('')}catch{}}
 loadWeather();setInterval(loadWeather,600000);
 
 // NEWS
 const NCATS=[
- {k:'generale',l:'Generale',u:['https://www.digi24.ro/rss','https://www.mediafax.ro/rss','https://www.gandul.ro/feed','https://www.realitatea.net/rss/news.xml','https://evz.ro/feed']},
- {k:'sport',l:'Sport',u:['https://www.gsp.ro/rss/index.xml','https://www.prosport.ro/rss','https://www.digi24.ro/rss/sport']},
- {k:'politica',l:'Politică',u:['https://www.digi24.ro/rss/politica','https://www.gandul.ro/politica/feed','https://www.mediafax.ro/politic/rss']},
- {k:'showbiz',l:'Showbiz',u:['https://www.cancan.ro/feed','https://www.catavencii.ro/feed']}
+ {k:'generale',l:'Generale',u:['https://www.digi24.ro/rss','https://evz.ro/feed']},
+ {k:'sport',l:'Sport',u:['https://www.gsp.ro/rss/index.xml','https://www.prosport.ro/rss']},
+ {k:'politica',l:'Politică',u:['https://www.digi24.ro/rss/politica','https://www.mediafax.ro/politic/rss']},
+ {k:'showbiz',l:'Showbiz',u:['https://www.cancan.ro/feed']}
 ];
 let ncat='generale';
 function rNT(){ntabs.innerHTML=NCATS.map(c=>`<button onclick="sNC('${c.k}')" class="pill ${c.k===ncat?'pill-a':'pill-i'}">${c.l}</button>`).join('')}
@@ -142,61 +141,50 @@ async function loadNews(){
  nlist.innerHTML='<li class="text-white/40 text-sm">Se încarcă…</li>';
  const cat=NCATS.find(c=>c.k===ncat);
  try{
-  const results=await Promise.allSettled(cat.u.map(u=>fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}&count=8`).then(r=>r.json())));
+  const results=await Promise.allSettled(cat.u.map(u=>fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}`).then(r=>r.json())));
   let all=[];
   for(const r of results){if(r.status==='fulfilled'&&r.value.items)for(const it of r.value.items)all.push({...it,src:r.value.feed?.title||''})}
-  all.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
-  const seen=new Set();all=all.filter(n=>{const t=n.title.toLowerCase();if(seen.has(t))return false;seen.add(t);return true}).slice(0,25);
-  nlist.innerHTML=all.length?all.map(n=>`<li><a href="${n.link}" target="_blank" class="group block"><p class="text-white/90 text-sm group-hover:text-white">${n.title} <span style="color:var(--ro-yellow)">↗</span></p><p class="text-white/40 text-[11px] mt-0.5">${n.src}</p></a></li>`).join(''):'<li class="text-white/40 text-sm">Nicio știre.</li>';
- }catch{nlist.innerHTML='<li class="text-white/40 text-sm">Eroare.</li>'}
+  all.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
+  nlist.innerHTML=all.slice(0,20).map(n=>`<li><a href="${n.link}" target="_blank" class="group block"><p class="text-white/90 text-sm group-hover:text-white">${n.title} <span style="color:var(--ro-yellow)">↗</span></p><p class="text-white/40 text-[11px] mt-0.5">${n.src}</p></a></li>`).join('')||'<li>Nicio știre.</li>';
+ }catch{nlist.innerHTML='<li>Eroare știri.</li>'}
 }
 rNT();loadNews();
 
-// FOOTBALL (cu CORS proxy)
-const CORS='https://corsproxy.io/?';
-const LGS=[{k:'liga1_ro',l:'Liga 1 RO',iframe:true},{k:'PL',l:'Premier L.'},{k:'PD',l:'La Liga'},{k:'SA',l:'Serie A'},{k:'BL1',l:'Bundesliga'},{k:'FL1',l:'Ligue 1'}];
+// FOOTBALL
+const LGS=[{k:'liga1_ro',l:'Liga 1 RO'},{k:'PL',l:'Premier L.'},{k:'PD',l:'La Liga'},{k:'SA',l:'Serie A'},{k:'BL1',l:'Bundesliga'}];
 const FTABS=[{k:'live',l:'Live'},{k:'past',l:'Rezultate'},{k:'standings',l:'Clasament'}];
 let flg='PL',ftb='past';
 function rFT(){flgs.innerHTML=LGS.map(l=>`<button onclick="sFL('${l.k}')" class="lpill ${l.k===flg?'lpill-a':'lpill-i'}">${l.l}</button>`).join('');ftabs.innerHTML=FTABS.map(t=>`<button onclick="sFT('${t.k}')" class="pill ${t.k===ftb?'pill-a':'pill-i'}">${t.l}</button>`).join('')}
 function sFL(k){flg=k;rFT();loadF()}
 function sFT(k){ftb=k;rFT();loadF()}
-async function fdG(p){const url=CORS+encodeURIComponent(`https://api.football-data.org/v4${p}`);const r=await fetch(url,{headers:{'X-Auth-Token':FD_KEY}});if(!r.ok)throw new Error('API '+r.status);return r.json()}
+async function fdG(p){const r=await fetch(PROXY+encodeURIComponent(`https://api.football-data.org/v4${p}`),{headers:{'X-Auth-Token':FD_KEY}});return r.json()}
 async function loadF(){
  fbody.innerHTML='<p class="text-white/40 text-sm">Se încarcă…</p>';
- if(flg==='liga1_ro'){fbody.innerHTML=`<iframe src="https://www.sofascore.com/tournament/152/season/63647/embed" width="100%" height="480" frameborder="0" style="border-radius:1rem;background:#fff"></iframe>`;return}
+ if(flg==='liga1_ro'){fbody.innerHTML=`<iframe src="https://www.sofascore.com/tournament/152/season/63647/embed" width="100%" height="400" frameborder="0"></iframe>`;return}
  try{
   if(ftb==='standings'){
    const d=await fdG(`/competitions/${flg}/standings`);
-   const t=(d.standings.find(s=>s.type==='TOTAL')||{}).table||[];
-   fbody.innerHTML=t.length?`<table class="w-full text-xs"><thead style="color:var(--ro-yellow)"><tr><th class="text-left py-1">#</th><th class="text-left">Echipă</th><th class="text-center">J</th><th class="text-center">GD</th><th class="text-right">P</th></tr></thead><tbody>${t.map(r=>`<tr class="border-t border-white/5"><td class="py-1.5 text-white/60">${r.position}</td><td class="text-white/90 truncate max-w-[120px]">${r.team.shortName||r.team.name}</td><td class="text-center text-white/70">${r.playedGames}</td><td class="text-center text-white/70">${r.goalDifference>0?'+':''}${r.goalDifference}</td><td class="text-right text-white font-semibold">${r.points}</td></tr>`).join('')}</tbody></table>`:'<p class="text-white/40 text-sm">Nu există clasament.</p>';
+   const t=d.standings[0].table;
+   fbody.innerHTML=`<table class="w-full text-xs"><tbody>${t.map(r=>`<tr class="border-b border-white/5"><td class="py-1">${r.position}</td><td>${r.team.shortName}</td><td class="text-right font-bold">${r.points}p</td></tr>`).join('')}</tbody></table>`;
   }else{
-   const td=new Date();const t0=new Date(td);t0.setDate(t0.getDate()-21);const t2=new Date(td);t2.setDate(t2.getDate()+7);
-   const status=ftb==='live'?'LIVE,IN_PLAY,PAUSED':'FINISHED';
-   const dF=(ftb==='live'?td:t0).toISOString().slice(0,10);
-   const dT=(ftb==='live'?t2:td).toISOString().slice(0,10);
-   const d=await fdG(`/competitions/${flg}/matches?status=${status}&dateFrom=${dF}&dateTo=${dT}`);
-   const ev=(d.matches||[]).slice(-20).reverse();
-   fbody.innerHTML=ev.length?ev.map(m=>{const s=m.score.fullTime;const has=s.home!=null;return `<div class="flex items-center justify-between gap-2 py-2 border-b border-white/5"><div class="flex-1 min-w-0"><p class="text-white/90 text-sm truncate">${m.homeTeam.shortName||m.homeTeam.name}</p><p class="text-white/90 text-sm truncate">${m.awayTeam.shortName||m.awayTeam.name}</p></div><div class="text-right">${has?`<div class="fh font-medium leading-tight" style="color:var(--ro-yellow)"><div>${s.home}</div><div>${s.away}</div></div>`:`<div class="text-white/50 text-xs leading-tight"><div>${m.utcDate.slice(5,10)}</div><div>${m.utcDate.slice(11,16)}</div></div>`}</div>${ftb==='live'?'<div class="flex items-center gap-1 text-[10px] uppercase" style="color:var(--ro-red)"><span class="dot"></span>LIVE</div>':''}</div>`}).join(''):`<p class="text-white/40 text-sm">${ftb==='live'?'Nu sunt meciuri live acum.':'Nu există meciuri.'}</p>`;
+   const d=await fdG(`/competitions/${flg}/matches?status=${ftb==='live'?'IN_PLAY':'FINISHED'}`);
+   const ev=(d.matches||[]).slice(-15).reverse();
+   fbody.innerHTML=ev.length?ev.map(m=>`<div class="py-2 border-b border-white/5 flex justify-between text-sm"><span>${m.homeTeam.shortName} - ${m.awayTeam.shortName}</span><span style="color:var(--ro-yellow)">${m.score.fullTime.home}:${m.score.fullTime.away}</span></div>`).join(''):'Fără meciuri.';
   }
- }catch(e){fbody.innerHTML='<p class="text-red-400 text-sm">Eroare: '+e.message+'. Încearcă peste 30s.</p>'}
+ }catch{fbody.innerHTML='Eroare date fotbal.';}
 }
 rFT();loadF();
 
 // HOROSCOPE
-const ZS=[{k:'Aries',l:'Berbec',e:'♈',d:'21 mar - 19 apr'},{k:'Taurus',l:'Taur',e:'♉',d:'20 apr - 20 mai'},{k:'Gemini',l:'Gemeni',e:'♊',d:'21 mai - 20 iun'},{k:'Cancer',l:'Rac',e:'♋',d:'21 iun - 22 iul'},{k:'Leo',l:'Leu',e:'♌',d:'23 iul - 22 aug'},{k:'Virgo',l:'Fecioară',e:'♍',d:'23 aug - 22 sep'},{k:'Libra',l:'Balanță',e:'♎',d:'23 sep - 22 oct'},{k:'Scorpio',l:'Scorpion',e:'♏',d:'23 oct - 21 noi'},{k:'Sagittarius',l:'Săgetător',e:'♐',d:'22 noi - 21 dec'},{k:'Capricorn',l:'Capricorn',e:'♑',d:'22 dec - 19 ian'},{k:'Aquarius',l:'Vărsător',e:'♒',d:'20 ian - 18 feb'},{k:'Pisces',l:'Pești',e:'♓',d:'19 feb - 20 mar'}];
-const ZTABS=[{k:'daily',l:'Zi'},{k:'weekly',l:'Săptămână'},{k:'monthly',l:'Lună'},{k:'yearly',l:'An'}];
-const YEAR_RO={Aries:'2025 aduce curaj și oportunități noi în carieră. Focus pe sănătate și echilibru. Primăvara e momentul marilor decizii.',Taurus:'An al stabilității financiare. Relațiile apropiate se consolidează. Atenție la consum și confort excesiv.',Gemini:'Comunicarea îți aduce succes. Călătorii și proiecte creative. Vara e favorabilă învățării.',Cancer:'Familia și casa sunt în prim-plan. Schimbări emoționale importante. Toamna aduce împliniri.',Leo:'An al recunoașterii publice. Creativitate și pasiune. Atenție la orgoliu, echilibrează cu diplomație.',Virgo:'Organizare și sănătate îmbunătățită. Proiecte detaliate reușesc. Iarna e pentru introspecție.',Libra:'Parteneriate și echilibru. Decizii de viață importante. Frumusețea și arta te inspiră.',Scorpio:'Transformări profunde. Intuiția e puternică. Finanțe bune în a doua jumătate a anului.',Sagittarius:'Expansiune, călătorii, învățare. Optimismul deschide uși. Atenție la promisiuni exagerate.',Capricorn:'Carieră la apogeu. Muncă răsplătită. Sănătatea cere atenție constantă.',Aquarius:'Inovație și prieteni noi. Proiecte neconvenționale reușesc. Libertatea personală e esențială.',Pisces:'An spiritual și creativ. Visele devin realitate. Atenție la iluzii și granițe clare.'};
-let zsel=null,ztab='daily';
-function rZG(){zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-2xl" style="color:${zsel===z.k?'var(--ro-yellow)':'#60a5fa'}">${z.e}</div><div class="text-[10px] text-white/80 mt-0.5">${z.l}</div></button>`).join('');ztabs.innerHTML=zsel?ZTABS.map(t=>`<button onclick="sZT('${t.k}')" class="pill ${t.k===ztab?'pill-a':'pill-i'}">${t.l}</button>`).join(''):''}
-function sZ(k){zsel=k;ztab='daily';rZG();loadZ()}
-function sZT(k){ztab=k;rZG();loadZ()}
-async function loadZ(){if(!zsel)return;const z=ZS.find(x=>x.k===zsel);zbody.innerHTML=`<div class="mb-2"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-sm">Se încarcă…</p>`;try{if(ztab==='yearly'){zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">Horoscop anual</p><p class="text-white/90 text-sm leading-relaxed">${YEAR_RO[zsel]}</p>`;return}const ep=ztab==='daily'?'daily':ztab==='weekly'?'weekly':'monthly';const param=ztab==='daily'?'&day=TODAY':'';const r=await fetch(CORS+encodeURIComponent(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/${ep}?sign=${zsel}${param}`));const d=await r.json();const txt=d.data?.horoscope_data||'Nedisponibil';const date=d.data?.date||d.data?.week||d.data?.month||'';zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">${ZTABS.find(t=>t.k===ztab).l} · ${date}</p><p class="text-white/90 text-sm leading-relaxed">${txt}</p><p class="text-white/30 text-[10px] mt-3 italic">Sursă: horoscope API (engleză, traducere automată recomandată)</p>`}catch{zbody.innerHTML='<p class="text-red-400 text-sm">Eroare la încărcare.</p>'}}
+const ZS=[{k:'Aries',l:'Berbec',e:'♈'},{k:'Taurus',l:'Taur',e:'♉'},{k:'Gemini',l:'Gemeni',e:'♊'},{k:'Cancer',l:'Rac',e:'♋'},{k:'Leo',l:'Leu',e:'♌'},{k:'Virgo',l:'Fecioară',e:'♍'},{k:'Libra',l:'Balanță',e:'♎'},{k:'Scorpio',l:'Scorpion',e:'♏'},{k:'Sagittarius',l:'Săgetător',e:'♐'},{k:'Capricorn',l:'Capricorn',e:'♑'},{k:'Aquarius',l:'Vărsător',e:'♒'},{k:'Pisces',l:'Pești',e:'♓'}];
+let zsel=null;
+function rZG(){zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-2xl">${z.e}</div><div class="text-[10px]">${z.l}</div></button>`).join('')}
+async function sZ(k){zsel=k;rZG();zbody.innerHTML='Încărcare...';try{const r=await fetch(PROXY+encodeURIComponent(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${k}&day=TODAY`));const d=await r.json();zbody.innerHTML=`<p class="text-sm leading-relaxed">${d.data.horoscope_data}</p>`;}catch{zbody.innerHTML='Eroare horoscop.';}}
 rZG();
 
 // QUOTE
-const QS=[{q:"Singurul mod de a face o treabă grozavă este să iubești ceea ce faci.",a:"Steve Jobs"},{q:"Nu aștepta. Timpul nu va fi niciodată potrivit.",a:"Napoleon Hill"},{q:"Călătoria de o mie de mile începe cu un singur pas.",a:"Lao Tzu"},{q:"Fii tu însuți; toți ceilalți sunt deja ocupați.",a:"Oscar Wilde"},{q:"Succesul nu e final, eșecul nu e fatal: curajul de a continua contează.",a:"Winston Churchill"},{q:"Fii schimbarea pe care vrei să o vezi în lume.",a:"Mahatma Gandhi"},{q:"Dacă poți să visezi, poți să o faci.",a:"Walt Disney"},{q:"Nu judeca fiecare zi după recolta pe care o strângi, ci după semințele pe care le plantezi.",a:"R. L. Stevenson"},{q:"Mintea este totul. Ceea ce gândești, aceea devii.",a:"Buddha"},{q:"Nu număra zilele, fă ca zilele să conteze.",a:"Muhammad Ali"},{q:"Dacă vrei să mergi repede, mergi singur. Dacă vrei să ajungi departe, mergi împreună.",a:"Proverb african"}];
-const ts=new Date().toISOString().slice(0,10);let h=0;for(const c of ts)h=(h*31+c.charCodeAt(0))>>>0;
-const qq=QS[h%QS.length];qtext.textContent=`„${qq.q}"`;qauthor.textContent=`— ${qq.a}`;
+const QS=[{q:"Succesul nu este final, eșecul nu este fatal.",a:"W. Churchill"},{q:"Fii schimbarea pe care vrei să o vezi în lume.",a:"Ghandi"}];
+const qq=QS[Math.floor(Math.random()*QS.length)];qtext.textContent=`„${qq.q}"`;qauthor.textContent=`— ${qq.a}`;
 </script>
 </body>
 </html>
