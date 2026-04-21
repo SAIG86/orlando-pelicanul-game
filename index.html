@@ -1,225 +1,167 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Dashboard Modern</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        /* DESIGN MODERN - CULORI STRICTE (Negru, Rosu, Galben, Albastru) */
-        :root {
-            --bg-body: #0a0a0a;
-            --bg-card: #151515;
-            --primary: #FCD116; /* Galben */
-            --accent-red: #CE1126;
-            --accent-blue: #002B7F;
-            --text-main: #ffffff;
-            --text-sub: #888888;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .dashboard {
-            width: 100%;
-            max-width: 1400px;
-            display: grid;
-            grid-template-columns: 250px 1fr 350px;
-            gap: 20px;
-        }
-
-        /* Sidebar Stânga (Ca în poză) */
-        .sidebar {
-            background-color: var(--bg-card);
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .logo { color: var(--accent-blue); font-size: 2rem; font-weight: 600; margin-bottom: 50px; }
-        .nav-icon { color: var(--text-sub); font-size: 1.5rem; margin: 15px 0; cursor: pointer; }
-        .nav-icon.active { color: var(--primary); }
-
-        /* Coloana Centrală */
-        .main-col { display: flex; flex-direction: column; gap: 20px; }
-        
-        /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .welcome { font-size: 1.5rem; font-weight: 500; }
-        .user-info { display: flex; align-items: center; gap: 10px; color: var(--text-sub); }
-        .search { background: #222; border: 1px solid #333; border-radius: 10px; padding: 10px; color: white; width: 300px; }
-
-        /* Card Vreme Modern (Ca în poză) */
-        .weather-card {
-            background-color: var(--bg-card);
-            border-radius: 20px;
-            padding: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #222;
-        }
-        .w-main { display: flex; align-items: center; gap: 20px; }
-        .w-icon { font-size: 4rem; color: var(--primary); }
-        .w-temp { font-size: 4rem; font-weight: 600; }
-        .w-meta { color: var(--text-sub); font-size: 0.9rem; }
-
-        /* Grid 2x2 Fotbal și Știri */
-        .lower-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .data-card {
-            background-color: var(--bg-card);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid #222;
-        }
-        .card-header { font-size: 1.1rem; color: var(--accent-red); margin-bottom: 15px; font-weight: 500; border-bottom: 1px solid #222; padding-bottom: 10px;}
-
-        /* Fotbal stilat */
-        .match { border-bottom: 1px solid #222; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; }
-        .team { display: flex; align-items: center; gap: 10px; }
-        .match-live { color: var(--accent-red); font-weight: 600; font-size: 0.8rem; }
-
-        /* Știri stilate */
-        .news-item { color: var(--text-sub); text-decoration: none; display: block; padding: 10px 0; border-bottom: 1px dashed #222; font-size: 0.9rem;}
-        .news-item:hover { color: var(--primary); }
-
-        /* Coloana Dreaptă (Ceas și Task-uri) */
-        .right-col { display: flex; flex-direction: column; gap: 20px; }
-        .time-card {
-            background-color: var(--bg-card);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 250px;
-            border: 1px solid var(--accent-blue);
-        }
-        #ceas { font-size: 4.5rem; font-weight: 600; color: var(--primary); }
-        #data { color: var(--text-sub); margin-top: -10px; }
-
-        .task-card {
-            background-color: var(--bg-card);
-            border-radius: 20px;
-            padding: 20px;
-            flex-grow: 1;
-        }
-        .task-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { background: #111; border: 1px solid #333; border-radius: 10px; padding: 12px; color: white; flex-grow: 1; }
-        button { background: var(--accent-blue); color: white; border: none; border-radius: 10px; padding: 12px 20px; font-weight: 600; cursor: pointer; }
-        button:hover { background: var(--accent-red); }
-        ul { list-style: none; padding: 0; }
-        li { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; color: var(--text-sub); font-size: 0.9rem;}
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dashboard Personal</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--ro-blue:#002B7F;--ro-yellow:#FCD116;--ro-red:#CE1126}
+body{margin:0;background:#060a1a;color:#fff;font-family:'Manrope',sans-serif;min-height:100vh;overflow-x:hidden}
+.fh{font-family:'Outfit',sans-serif}
+.gc{position:relative;overflow:hidden;background:rgba(255,255,255,.03);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.1);border-radius:2rem;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:.3s}
+.gc:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2)}
+.gc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--ro-blue) 0%,var(--ro-yellow) 50%,var(--ro-red) 100%);opacity:.7}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,43,127,.4) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(206,17,38,.3) 0%,transparent 50%),#060a1a}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--ro-red);animation:lp 1.4s infinite}
+@keyframes lp{0%{box-shadow:0 0 0 0 rgba(206,17,38,.8)}70%{box-shadow:0 0 0 10px rgba(206,17,38,0)}100%{box-shadow:0 0 0 0 rgba(206,17,38,0)}}
+.ss::-webkit-scrollbar{width:6px}.ss::-webkit-scrollbar-thumb{background:rgba(252,209,22,.3);border-radius:999px}
+@keyframes ri{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.ri{animation:ri .7s cubic-bezier(.4,0,.2,1) both}
+.pill{padding:.35rem .8rem;border-radius:999px;font-size:.75rem;font-weight:500;transition:.2s;cursor:pointer;border:none}
+.pill-a{background:var(--ro-yellow);color:#000}
+.pill-i{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
+.pill-i:hover{background:rgba(0,43,127,.4);color:#fff}
+.lpill{font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:.3rem .7rem;border-radius:999px;font-weight:700;cursor:pointer;border:none;transition:.2s}
+.lpill-a{background:var(--ro-red);color:#fff}
+.lpill-i{background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)}
+.lpill-i:hover{background:rgba(0,43,127,.4);color:#fff}
+.zbtn{padding:.4rem;border-radius:.75rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:.2s;text-align:center}
+.zbtn:hover{background:rgba(252,209,22,.15);border-color:var(--ro-yellow)}
+.zbtn-a{background:linear-gradient(135deg,var(--ro-blue),var(--ro-red));border-color:var(--ro-yellow);color:#fff}
+input:focus{outline:none}
+.tc{background:linear-gradient(90deg,var(--ro-blue),var(--ro-yellow),var(--ro-red));-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
 </head>
 <body>
+<div class="bg"></div>
+<div class="relative z-10 w-full min-h-screen p-4 md:p-8">
+<div class="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
 
-    <div class="dashboard">
-        
-        <div class="sidebar">
-            <div class="logo">●</div>
-            <div class="nav-icon active">🏠</div>
-            <div class="nav-icon">📊</div>
-            <div class="nav-icon">💬</div>
-            <div class="nav-icon">⚙️</div>
-        </div>
+<div class="md:col-span-8 ri">
+<div class="gc p-6 md:p-10 h-full flex flex-col justify-center pl-8">
+<p class="text-white/60 text-sm uppercase tracking-[.25em]" id="greet">Bună</p>
+<div class="fh font-light tracking-tighter leading-none mt-2" style="font-size:clamp(4rem,12vw,10rem)"><span id="hh" class="text-white">--</span><span style="color:var(--ro-yellow)">:</span><span id="mm" class="text-white">--</span><span class="text-4xl md:text-5xl align-top ml-2" style="color:var(--ro-red)" id="ss">--</span></div>
+<p class="mt-2 text-white/80 text-lg md:text-2xl fh font-light" id="dt">...</p>
+</div>
+</div>
 
-        <div class="main-col">
-            <div class="header">
-                <div class="welcome">Bun venit, <span style="color:var(--primary)">Utilizator</span></div>
-                <input type="text" class="search" placeholder="Caută ceva...">
-                <div class="user-info">Utilizator <img src="https://via.placeholder.com/40" style="border-radius:50%"></div>
-            </div>
+<div class="md:col-span-4 ri">
+<div class="gc p-6 pl-8 h-full flex flex-col">
+<div class="flex items-center justify-between">
+<div class="text-white/70 text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">📍 Vremea</div>
+<button onclick="ws.classList.toggle('hidden')" class="text-white/50 hover:text-white text-xs px-2 py-1 rounded-full hover:bg-white/10">🔍 Alege oraș</button>
+</div>
+<div id="ws" class="hidden mt-3 space-y-2">
+<div class="flex gap-2"><input id="wsi" placeholder="Caută oraș..." class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/40"/><button onclick="searchCity()" class="bg-white text-black text-sm px-4 py-2 rounded-full font-medium">Caută</button></div>
+<div class="flex flex-wrap gap-2"><button onclick="setCity('București',44.4268,26.1025)" class="text-xs px-3 py-1 rounded-full bg-white/5 hover:bg-white/15 text-white/80">București</button><button onclick="setCity('Pantelimon',44.4497,26.2103)" class="text-xs px-3 py-1 rounded-full bg-white/5 hover:bg-white/15 text-white/80">Pantelimon</button></div>
+<ul id="wsr" class="space-y-1 max-h-40 overflow-auto ss"></ul>
+</div>
+<div class="mt-4 flex items-start justify-between">
+<div><p class="text-white text-xl fh font-medium" id="wcity">București</p><p class="text-white/50 text-xs mt-0.5" id="wdesc">—</p></div>
+<div class="text-4xl" id="wico">☁️</div>
+</div>
+<div class="mt-2 flex items-end gap-3"><span class="fh font-light text-6xl md:text-7xl leading-none" style="color:#60a5fa" id="wtemp">--</span><span class="text-white/60 text-2xl mb-2 fh">°C</span></div>
+<div class="mt-2 flex gap-4 text-white/60 text-xs" id="wmeta"></div>
+<div class="mt-4 pt-4 border-t border-white/10 flex gap-3 overflow-x-auto ss" id="whourly"></div>
+</div>
+</div>
 
-            <div class="weather-card">
-                <div class="w-main">
-                    <div class="w-icon">☀️</div>
-                    <div>
-                        <div class="w-temp">23°/13°</div>
-                        <div class="w-meta">Pantelimon • Un soare cu un vânt răcoros</div>
-                    </div>
-                </div>
-                <div class="w-meta" style="text-align:right">Răsărit: 6:30<br>Apus: 19:30</div>
-            </div>
+<div class="md:col-span-4 ri">
+<div class="gc p-6 pl-8 h-full flex flex-col">
+<div class="text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">📰 Știri</div>
+<div class="mt-3 flex flex-wrap gap-1.5" id="ntabs"></div>
+<ul id="nlist" class="mt-4 space-y-3 max-h-[360px] overflow-y-auto ss pr-1"></ul>
+</div>
+</div>
 
-            <div class="lower-grid">
-                <div class="data-card">
-                    <div class="card-header">FOTBAL LIVE & REZULTATE</div>
-                    <div class="match">
-                        <div>Liga 1</div>
-                        <div>FCSB <span style="font-weight:600; color:white">2 - 1</span> Rapid</div>
-                        <div class="match-live">LIVE '78</div>
-                    </div>
-                    <div class="match">
-                        <div>Premier League</div>
-                        <div>Man. Utd <span style="font-weight:600; color:white">3 - 3</span> Liverpool</div>
-                        <div>Final</div>
-                    </div>
-                    <div class="match">
-                        <div>La Liga</div>
-                        <div>Real Madrid <span style="font-weight:600; color:white">1 - 0</span> Barcelona</div>
-                        <div class="match-live">Min 23</div>
-                    </div>
-                </div>
+<div class="md:col-span-4 ri">
+<div class="gc p-6 pl-8 h-full flex flex-col">
+<div class="flex items-center justify-between"><div class="text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">🏆 Fotbal</div></div>
+<div class="mt-3 flex flex-wrap gap-1" id="flgs"></div>
+<div class="mt-3 flex gap-1.5" id="ftabs"></div>
+<div class="mt-4 max-h-[360px] overflow-y-auto ss pr-1" id="fbody"></div>
+</div>
+</div>
 
-                <div class="data-card">
-                    <div class="card-header">ȘTIRI ROMÂNIA</div>
-                    <a href="#" class="news-item">Hagi anunță noi transferuri la Farul</a>
-                    <a href="#" class="news-item">Campionatele europene: Programul de weekend</a>
-                    <a href="#" class="news-item">Politică: Noile măsuri fiscale explicate</a>
-                    <a href="#" class="news-item">Showbiz: Ce a făcut vedeta X la București</a>
-                </div>
-            </div>
-        </div>
+<div class="md:col-span-4 ri">
+<div class="gc p-6 pl-8 h-full flex flex-col">
+<div class="text-xs uppercase tracking-widest" style="color:var(--ro-yellow)">✨ Horoscop</div>
+<div class="mt-3 grid grid-cols-4 gap-1.5" id="zgrid"></div>
+<div class="mt-3 flex gap-1.5 flex-wrap" id="ztabs"></div>
+<div class="mt-3 overflow-y-auto ss pr-1 max-h-[260px]" id="zbody"><p class="text-white/40 text-sm">Alege o zodie ↑</p></div>
+</div>
+</div>
 
-        <div class="right-col">
-            <div class="time-card">
-                <h2>Oglindă timp</h2>
-                <div id="ceas">00:00</div>
-                <div id="data">Încarcare...</div>
-            </div>
+<div class="md:col-span-12 ri">
+<div class="gc p-8 md:p-10 pl-10 relative overflow-hidden">
+<div class="absolute -top-4 -left-4 text-[10rem] leading-none opacity-[.06]" style="color:var(--ro-yellow)">"</div>
+<div class="relative z-10">
+<p class="text-xs uppercase tracking-[.25em]" style="color:var(--ro-yellow)">Citatul zilei</p>
+<p class="mt-3 fh font-light text-white/95 text-2xl md:text-3xl italic leading-snug max-w-4xl" id="qtext">...</p>
+<p class="mt-3 text-sm" style="color:#60a5fa" id="qauthor"></p>
+</div>
+</div>
+</div>
 
-            <div class="task-card">
-                <h2>Task-uri rapide</h2>
-                <div class="task-input-group">
-                    <input type="text" id="taskInput" placeholder="Ce ai de făcut azi?">
-                    <button onclick="addTask()">+</button>
-                </div>
-                <ul id="taskList">
-                    <li>Exemplu Task 1 (apasă X pentru a șterge) <button onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--accent-red); cursor:pointer;">X</button></li>
-                </ul>
-            </div>
-        </div>
+</div>
+<p class="mx-auto max-w-7xl mt-8 text-center text-white/40 text-xs">🇷🇴 wttr.in · Open-Meteo · football-data.org · Sofascore · Digi24/GSP/Cancan · Horoscope API</p>
+</div>
 
-    </div>
+<script>
+const FD_KEY='000f99b342a747abbefc9eb7ce8ee6ca';
 
-    <script>
-        // CEAS SI DATA (Funcțional, la secundă)
-        function updateTime() {
-            const acum = new Date();
-            const ceas = document.getElementById('ceas');
-            const data = document.getElementById('data');
-            
-            const ore = String(acum.getHours()).padStart(2, '0');
-            const minute = String(acum.getMinutes()).padStart(2, '0');
-            ceas.innerText = `${ore}:${minute}`;
-            
-            const optiuni = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            data.innerText = acum.toLocaleDateString('ro-RO', optiuni);
-        }
-        setInterval(updateTime, 1000); // Se actualizează la fiecare secundă
-        updateTime();
+// CLOCK
+const W=["Duminică","Luni","Marți","Miercuri","Joi","Vineri","Sâmbătă"];
+const M=["Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie","Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie"];
+function tick(){const n=new Date();hh.textContent=String(n.getHours()).padStart(2,'0');mm.textContent=String(n.getMinutes()).padStart(2,'0');ss.textContent=String(n.getSeconds()).padStart(2,'0');const h=n.getHours();greet.textContent=h<5?"Noapte bună":h<12?"Bună dimineața":h<18?"Bună ziua":h<22?"Bună seara":"Noapte bună";dt.textContent=`${W[n.getDay()]}, ${n.getDate()} ${M[n.getMonth()]} ${n.getFullYear()}`}
+setInterval(tick,1000);tick();
 
-        // TASK-URI (Funcțional, salvează local)
-        function addTask() {
-            const input
+// WEATHER
+const WICO={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',75:'❄️',80:'🌧️',82:'⛈️',95:'⛈️'};
+const W2W={"113":0,"116":2,"119":3,"122":3,"143":45,"176":51,"200":95,"227":71,"248":48,"263":51,"266":51,"281":56,"293":61,"296":61,"299":63,"302":63,"305":65,"308":65,"323":71,"326":73,"329":73,"332":75,"335":75,"353":80,"356":81,"359":82,"386":95,"389":96,"395":99};
+const WD={0:'Senin',2:'Parțial noros',3:'Noros',45:'Ceață',51:'Burniță',61:'Ploaie',63:'Ploaie',65:'Ploaie',71:'Ninsoare',75:'Ninsoare',80:'Ploaie',95:'Furtună'};
+let city=JSON.parse(localStorage.getItem('dc')||'null')||{name:'București',lat:44.4268,lon:26.1025};
+function setCity(n,lat,lon){city={name:n,lat:lat,lon:lon};localStorage.setItem('dc',JSON.stringify(city));ws.classList.add('hidden');wsr.innerHTML='';loadWeather()}
+async function searchCity(){const q=wsi.value.trim();if(!q)return;try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=ro`);const d=await r.json();wsr.innerHTML=(d.results||[]).map(x=>`<li><button onclick="setCity('${x.name.replace(/'/g,'')}',${x.latitude},${x.longitude})" class="w-full text-left text-sm px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">${x.name} <span class="text-white/40">· ${x.admin1||''} ${x.country}</span></button></li>`).join('')}catch{wsr.innerHTML='<li class="text-white/40 text-sm">Eroare</li>'}}
+async function loadWeather(){wcity.textContent=city.name;try{const r=await fetch(`https://wttr.in/${city.lat},${city.lon}?format=j1`);const d=await r.json();const cc=d.current_condition[0];const code=W2W[cc.weatherCode]||3;wtemp.textContent=Math.round(cc.temp_C);wico.textContent=WICO[code]||'☁️';wdesc.textContent=WD[code]||cc.weatherDesc[0].value;wmeta.innerHTML=`<span>💧 ${cc.humidity}%</span><span>💨 ${Math.round(cc.windspeedKmph)} km/h</span><span>Resimțit ${Math.round(cc.FeelsLikeC)}°</span>`;const now=new Date();const nh=now.getHours();const td=now.toISOString().slice(0,10);const hours=[];for(const day of d.weather.slice(0,2)){for(const h of day.hourly){const hi=parseInt(h.time)/100;if(day.date>td||(day.date===td&&hi>=nh))hours.push({t:`${String(hi).padStart(2,'0')}:00`,tp:Math.round(h.tempC),c:W2W[h.weatherCode]||3});if(hours.length>=8)break}if(hours.length>=8)break}whourly.innerHTML=hours.map(h=>`<div class="flex flex-col items-center gap-1 min-w-[48px]"><span class="text-white/40 text-[10px]">${h.t}</span><span class="text-lg">${WICO[h.c]||'☁️'}</span><span class="text-white text-sm font-medium">${h.tp}°</span></div>`).join('')}catch{wtemp.textContent='--';wdesc.textContent='Eroare'}}
+loadWeather();setInterval(loadWeather,600000);
+
+// NEWS
+const NCATS=[{k:'generale',l:'Generale',u:'https://www.digi24.ro/rss'},{k:'sport',l:'Sport',u:'https://www.gsp.ro/rss/index.xml'},{k:'politica',l:'Politică',u:'https://www.digi24.ro/rss/politica'},{k:'showbiz',l:'Showbiz',u:'https://www.cancan.ro/feed'}];
+let ncat='generale';
+function rNT(){ntabs.innerHTML=NCATS.map(c=>`<button onclick="sNC('${c.k}')" class="pill ${c.k===ncat?'pill-a':'pill-i'}">${c.l}</button>`).join('')}
+function sNC(k){ncat=k;rNT();loadNews()}
+async function loadNews(){nlist.innerHTML='<li class="text-white/40 text-sm">Se încarcă…</li>';const cat=NCATS.find(c=>c.k===ncat);try{const r=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(cat.u)}`);const d=await r.json();nlist.innerHTML=(d.items||[]).slice(0,15).map(n=>`<li><a href="${n.link}" target="_blank" class="group block"><p class="text-white/90 text-sm group-hover:text-white">${n.title} <span style="color:var(--ro-yellow)">↗</span></p><p class="text-white/40 text-[11px] mt-0.5">${d.feed.title||''}</p></a></li>`).join('')||'<li class="text-white/40 text-sm">Nicio știre.</li>'}catch{nlist.innerHTML='<li class="text-white/40 text-sm">Eroare.</li>'}}
+rNT();loadNews();
+
+// FOOTBALL
+const LGS=[{k:'liga1_ro',l:'Liga 1 RO',iframe:true},{k:'PL',l:'Premier L.'},{k:'PD',l:'La Liga'},{k:'SA',l:'Serie A'},{k:'BL1',l:'Bundesliga'},{k:'FL1',l:'Ligue 1'}];
+const FTABS=[{k:'live',l:'Live'},{k:'past',l:'Rezultate'},{k:'standings',l:'Clasament'}];
+let flg='PL',ftb='past';
+function rFT(){flgs.innerHTML=LGS.map(l=>`<button onclick="sFL('${l.k}')" class="lpill ${l.k===flg?'lpill-a':'lpill-i'}">${l.l}</button>`).join('');ftabs.innerHTML=FTABS.map(t=>`<button onclick="sFT('${t.k}')" class="pill ${t.k===ftb?'pill-a':'pill-i'}">${t.l}</button>`).join('')}
+function sFL(k){flg=k;rFT();loadF()}
+function sFT(k){ftb=k;rFT();loadF()}
+async function fdG(p){const r=await fetch(`https://api.football-data.org/v4${p}`,{headers:{'X-Auth-Token':FD_KEY}});if(!r.ok)throw new Error('API: '+r.status);return r.json()}
+async function loadF(){fbody.innerHTML='<p class="text-white/40 text-sm">Se încarcă…</p>';if(flg==='liga1_ro'){fbody.innerHTML=`<iframe src="https://www.sofascore.com/tournament/152/season/63647/embed" width="100%" height="480" frameborder="0" scrolling="auto" style="border-radius:1rem;background:#fff" title="Liga 1 RO"></iframe><p class="text-white/40 text-[10px] mt-2">Liga 1 via Sofascore</p>`;return}try{if(ftb==='standings'){const d=await fdG(`/competitions/${flg}/standings`);const t=(d.standings.find(s=>s.type==='TOTAL')||{}).table||[];fbody.innerHTML=t.length?`<table class="w-full text-xs"><thead style="color:var(--ro-yellow)"><tr><th class="text-left py-1">#</th><th class="text-left">Echipă</th><th class="text-center">J</th><th class="text-center">GD</th><th class="text-right">P</th></tr></thead><tbody>${t.map(r=>`<tr class="border-t border-white/5"><td class="py-1.5 text-white/60">${r.position}</td><td class="text-white/90 truncate max-w-[120px]">${r.team.shortName||r.team.name}</td><td class="text-center text-white/70">${r.playedGames}</td><td class="text-center text-white/70">${r.goalDifference>0?'+':''}${r.goalDifference}</td><td class="text-right text-white font-semibold">${r.points}</td></tr>`).join('')}</tbody></table>`:'<p class="text-white/40 text-sm">Nu există clasament.</p>'}else{const td=new Date();const t0=new Date(td);t0.setDate(t0.getDate()-14);const status=ftb==='live'?'LIVE,IN_PLAY,PAUSED':'FINISHED';const dF=(ftb==='live'?td:t0).toISOString().slice(0,10);const dT=td.toISOString().slice(0,10);const d=await fdG(`/competitions/${flg}/matches?status=${status}&dateFrom=${dF}&dateTo=${dT}`);const ev=(d.matches||[]).slice(-20).reverse();fbody.innerHTML=ev.length?ev.map(m=>{const s=m.score.fullTime;const has=s.home!=null;return `<div class="flex items-center justify-between gap-2 py-2 border-b border-white/5"><div class="flex-1 min-w-0"><p class="text-white/90 text-sm truncate">${m.homeTeam.shortName||m.homeTeam.name}</p><p class="text-white/90 text-sm truncate">${m.awayTeam.shortName||m.awayTeam.name}</p></div><div class="text-right">${has?`<div class="fh font-medium leading-tight" style="color:var(--ro-yellow)"><div>${s.home}</div><div>${s.away}</div></div>`:`<div class="text-white/50 text-xs leading-tight"><div>${m.utcDate.slice(5,10)}</div><div>${m.utcDate.slice(11,16)}</div></div>`}</div>${ftb==='live'?'<div class="flex items-center gap-1 text-[10px] uppercase" style="color:var(--ro-red)"><span class="dot"></span>LIVE</div>':''}</div>`}).join(''):`<p class="text-white/40 text-sm">${ftb==='live'?'Nu sunt meciuri live acum.':'Nu există meciuri recente.'}</p>`}}catch(e){fbody.innerHTML='<p class="text-red-400 text-sm">Eroare: '+e.message+'</p>'}}
+rFT();loadF();
+
+// HOROSCOPE
+const ZS=[{k:'Aries',l:'Berbec',e:'♈',d:'21 mar - 19 apr'},{k:'Taurus',l:'Taur',e:'♉',d:'20 apr - 20 mai'},{k:'Gemini',l:'Gemeni',e:'♊',d:'21 mai - 20 iun'},{k:'Cancer',l:'Rac',e:'♋',d:'21 iun - 22 iul'},{k:'Leo',l:'Leu',e:'♌',d:'23 iul - 22 aug'},{k:'Virgo',l:'Fecioară',e:'♍',d:'23 aug - 22 sep'},{k:'Libra',l:'Balanță',e:'♎',d:'23 sep - 22 oct'},{k:'Scorpio',l:'Scorpion',e:'♏',d:'23 oct - 21 noi'},{k:'Sagittarius',l:'Săgetător',e:'♐',d:'22 noi - 21 dec'},{k:'Capricorn',l:'Capricorn',e:'♑',d:'22 dec - 19 ian'},{k:'Aquarius',l:'Vărsător',e:'♒',d:'20 ian - 18 feb'},{k:'Pisces',l:'Pești',e:'♓',d:'19 feb - 20 mar'}];
+const ZTABS=[{k:'daily',l:'Zi'},{k:'weekly',l:'Săptămână'},{k:'monthly',l:'Lună'},{k:'yearly',l:'An'}];
+const YEAR_RO={Aries:'2025 aduce curaj și oportunități noi în carieră. Focus pe sănătate și echilibru. Primăvara e momentul marilor decizii.',Taurus:'An al stabilității financiare. Relațiile apropiate se consolidează. Atenție la consum și confort excesiv.',Gemini:'Comunicarea îți aduce succes. Călătorii și proiecte creative. Vara e favorabilă învățării.',Cancer:'Familia și casa sunt în prim-plan. Schimbări emoționale importante. Toamna aduce împliniri.',Leo:'An al recunoașterii publice. Creativitate și pasiune. Atenție la orgoliu, echilibrează cu diplomație.',Virgo:'Organizare și sănătate îmbunătățită. Proiecte detaliate reușesc. Iarna e pentru introspecție.',Libra:'Parteneriate și echilibru. Decizii de viață importante. Frumusețea și arta te inspiră.',Scorpio:'Transformări profunde. Intuiția e puternică. Finanțe bune în a doua jumătate a anului.',Sagittarius:'Expansiune, călătorii, învățare. Optimismul deschide uși. Atenție la promisiuni exagerate.',Capricorn:'Carieră la apogeu. Muncă răsplătită. Sănătatea cere atenție constantă.',Aquarius:'Inovație și prieteni noi. Proiecte neconvenționale reușesc. Libertatea personală e esențială.',Pisces:'An spiritual și creativ. Visele devin realitate. Atenție la iluzii și granițe clare.'};
+let zsel=null,ztab='daily';
+function rZG(){zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-2xl" style="color:${zsel===z.k?'var(--ro-yellow)':'#60a5fa'}">${z.e}</div><div class="text-[10px] text-white/80 mt-0.5">${z.l}</div></button>`).join('');ztabs.innerHTML=zsel?ZTABS.map(t=>`<button onclick="sZT('${t.k}')" class="pill ${t.k===ztab?'pill-a':'pill-i'}">${t.l}</button>`).join(''):''}
+function sZ(k){zsel=k;ztab='daily';rZG();loadZ()}
+function sZT(k){ztab=k;rZG();loadZ()}
+async function loadZ(){if(!zsel)return;const z=ZS.find(x=>x.k===zsel);zbody.innerHTML=`<div class="mb-2"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-sm">Se încarcă…</p>`;try{if(ztab==='yearly'){zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-white/50 text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">Horoscop anual</p><p class="text-white/90 text-sm leading-relaxed">${YEAR_RO[zsel]}</p>`;return}const ep=ztab==='daily'?'daily':ztab==='weekly'?'weekly':'monthly';const param=ztab==='daily'?'&day=TODAY':'';const r=await fetch(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/${ep}?sign=${zsel}${param}`);const d=await r.json();const txt=d.data?.horoscope_data||'Nedisponibil';const date=d.data?.date||d.data?.week||d.data?.month||'';zbody.innerHTML=`<div class="mb-3"><span class="text-3xl" style="color:var(--ro-yellow)">${z.e}</span> <span class="fh text-xl" style="color:#60a5fa">${z.l}</span> <span class="text-white/40 text-xs">${z.d}</span></div><p class="text-[10px] uppercase tracking-widest mb-2" style="color:var(--ro-yellow)">${ZTABS.find(t=>t.k===ztab).l} · ${date}</p><p class="text-white/90 text-sm leading-relaxed">${txt}</p><p class="text-white/30 text-[10px] mt-3 italic">Sursă: horoscope API (engleză, traducere automată recomandată)</p>`}catch{zbody.innerHTML='<p class="text-red-400 text-sm">Eroare la încărcare.</p>'}}
+rZG();
+
+// QUOTE
+const QS=[{q:"Singurul mod de a face o treabă grozavă este să iubești ceea ce faci.",a:"Steve Jobs"},{q:"Nu aștepta. Timpul nu va fi niciodată potrivit.",a:"Napoleon Hill"},{q:"Călătoria de o mie de mile începe cu un singur pas.",a:"Lao Tzu"},{q:"Fii tu însuți; toți ceilalți sunt deja ocupați.",a:"Oscar Wilde"},{q:"Succesul nu e final, eșecul nu e fatal: curajul de a continua contează.",a:"Winston Churchill"},{q:"Fii schimbarea pe care vrei să o vezi în lume.",a:"Mahatma Gandhi"},{q:"Dacă poți să visezi, poți să o faci.",a:"Walt Disney"},{q:"Nu judeca fiecare zi după recolta pe care o strângi, ci după semințele pe care le plantezi.",a:"R. L. Stevenson"},{q:"Mintea este totul. Ceea ce gândești, aceea devii.",a:"Buddha"},{q:"Nu număra zilele, fă ca zilele să conteze.",a:"Muhammad Ali"},{q:"Dacă vrei să mergi repede, mergi singur. Dacă vrei să ajungi departe, mergi împreună.",a:"Proverb african"}];
+const ts=new Date().toISOString().slice(0,10);let h=0;for(const c of ts)h=(h*31+c.charCodeAt(0))>>>0;
+const qq=QS[h%QS.length];qtext.textContent=`„${qq.q}"`;qauthor.textContent=`— ${qq.a}`;
+</script>
+</body>
+</html>
