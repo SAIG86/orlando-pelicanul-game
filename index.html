@@ -127,49 +127,98 @@ async function loadNews(){
 }
 rNT();loadNews();
 
-// FOOTBALL (Using Proxy B for stability)
-const LGS=[{k:'PL',l:'Anglia'},{k:'PD',l:'Spania'},{k:'SA',l:'Italia'},{k:'BL1',l:'Germania'}];
-const FTABS=[{k:'standings',l:'Clasament'},{k:'past',l:'Rezultate'}];
+// FOOTBALL (Using Proxy B for stability) – standings, results, live
+const LGS=[
+  {k:'PL',l:'Anglia'},
+  {k:'PD',l:'Spania'},
+  {k:'SA',l:'Italia'},
+  {k:'BL1',l:'Germania'}
+];
+const FTABS=[
+  {k:'standings',l:'Clasament'},
+  {k:'past',l:'Rezultate'},
+  {k:'live',l:'Live'}
+];
 let flg='PL',ftb='standings';
+
 function rFT(){
     flgs.innerHTML=LGS.map(l=>`<button onclick="sFL('${l.k}')" class="pill ${l.k===flg?'pill-a':'pill-i'}">${l.l}</button>`).join('');
     ftabs.innerHTML=FTABS.map(t=>`<button onclick="sFT('${t.k}')" class="pill ${t.k===ftb?'pill-a':'pill-i'}">${t.l}</button>`).join('');
 }
 function sFL(k){flg=k;rFT();loadF()}
 function sFT(k){ftb=k;rFT();loadF()}
+
 async function loadF(){
     fbody.innerHTML='Se încarcă datele...';
-    const url = encodeURIComponent(`https://api.football-data.org/v4/competitions/${flg}/${ftb==='standings'?'standings':'matches?status=FINISHED'}`);
+
+    let endpoint;
+    if(ftb==='standings'){
+        endpoint='standings';
+    }else if(ftb==='past'){
+        endpoint='matches?status=FINISHED';
+    }else{
+        endpoint='matches?status=LIVE';
+    }
+
+    const url = encodeURIComponent(`https://api.football-data.org/v4/competitions/${flg}/${endpoint}`);
     try{
         const r=await fetch(PROXY_B + url,{headers:{'X-Auth-Token':FD_KEY}});
         const d=await r.json();
+
         if(ftb==='standings'){
             fbody.innerHTML=`<table class="w-full text-xs">` + d.standings[0].table.map(t=>`<tr class="border-b border-white/5"><td class="py-1">${t.position}</td><td>${t.team.shortName}</td><td class="text-right font-bold">${t.points}p</td></tr>`).join('') + `</table>`;
-        } else {
+        } else if(ftb==='past'){
             fbody.innerHTML=d.matches.slice(-12).reverse().map(m=>`<div class="text-xs py-1 border-b border-white/5 flex justify-between"><span>${m.homeTeam.shortName}-${m.awayTeam.shortName}</span><span class="text-yellow-400 font-bold">${m.score.fullTime.home}:${m.score.fullTime.away}</span></div>`).join('');
+        } else {
+            if(!d.matches || !d.matches.length){
+                fbody.innerHTML="<p class='text-xs opacity-60'>Nu sunt meciuri live acum.</p>";
+            }else{
+                fbody.innerHTML=d.matches.map(m=>`<div class="text-xs py-1 border-b border-white/5 flex justify-between"><span>${m.homeTeam.shortName}-${m.awayTeam.shortName}</span><span class="text-red-400 font-bold">${m.score.fullTime.home}:${m.score.fullTime.away}</span></div>`).join('');
+            }
         }
-    }catch(e){fbody.innerHTML="Eroare Proxy Fotbal. Reîncearcă în 10s.";}
+    }catch(e){
+        fbody.innerHTML="Eroare Proxy Fotbal. Reîncearcă în 10s.";
+    }
 }
 rFT();loadF();
 
 // HOROSCOPE (Using Proxy A)
-const ZS=[{k:'Aries',l:'Berbec',e:'♈'},{k:'Taurus',l:'Taur',e:'♉'},{k:'Gemini',l:'Gemeni',e:'♊'},{k:'Cancer',l:'Rac',e:'♋'},{k:'Leo',l:'Leu',e:'♌'},{k:'Virgo',l:'Fecioară',e:'♍'},{k:'Libra',l:'Balanță',e:'♎'},{k:'Scorpio',l:'Scorpion',e:'♏'},{k:'Sagittarius',l:'Săgetător',e:'♐'},{k:'Capricorn',l:'Capricorn',e:'♑'},{k:'Aquarius',l:'Vărsător',e:'♒'},{k:'Pisces',l:'Pești',e:'♓'}];
+const ZS=[
+  {k:'Aries',l:'Berbec',e:'♈'},
+  {k:'Taurus',l:'Taur',e:'♉'},
+  {k:'Gemini',l:'Gemeni',e:'♊'},
+  {k:'Cancer',l:'Rac',e:'♋'},
+  {k:'Leo',l:'Leu',e:'♌'},
+  {k:'Virgo',l:'Fecioară',e:'♍'},
+  {k:'Libra',l:'Balanță',e:'♎'},
+  {k:'Scorpio',l:'Scorpion',e:'♏'},
+  {k:'Sagittarius',l:'Săgetător',e:'♐'},
+  {k:'Capricorn',l:'Capricorn',e:'♑'},
+  {k:'Aquarius',l:'Vărsător',e:'♒'},
+  {k:'Pisces',l:'Pești',e:'♓'}
+];
 const ZT=['daily','weekly','monthly','yearly'];
 let zsel=null, zt='daily';
+
 function rZG(){
     zgrid.innerHTML=ZS.map(z=>`<button onclick="sZ('${z.k}')" class="zbtn ${zsel===z.k?'zbtn-a':''}"><div class="text-xl">${z.e}</div><div class="text-[9px]">${z.l}</div></button>`).join('');
     ztabs.innerHTML=ZT.map(t=>`<button onclick="sZT('${t}')" class="pill ${zt===t?'pill-a':'pill-i'}">${t}</button>`).join('');
 }
 function sZ(k){zsel=k;loadZ()}
 function sZT(k){zt=k;loadZ()}
+
 async function loadZ(){
-    if(!zsel) return; rZG(); zbody.innerHTML="Se citesc datele...";
+    if(!zsel) return;
+    rZG();
+    zbody.innerHTML="Se citesc datele...";
     const url = encodeURIComponent(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/${zt}?sign=${zsel}${zt==='daily'?'&day=TODAY':''}`);
     try{
         const r=await fetch(PROXY_A + url);
         const d=await r.json();
         zbody.innerHTML=d.data.horoscope_data;
-    }catch(e){zbody.innerHTML="Eroare Proxy Zodiac.";}
+    }catch(e){
+        zbody.innerHTML="Eroare Proxy Zodiac.";
+    }
 }
 rZG();
 </script>
