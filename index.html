@@ -1,165 +1,134 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-<meta charset="UTF-8">
-<title>Orlando vs Pelicanul</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Tricolor Pro</title>
+    <style>
+        /* DESIGN STRICT: NEGRU, ROSU, GALBEN, ALBASTRU */
+        body { 
+            background-color: black; 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            margin: 0; padding: 10px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        .container { width: 100%; max-width: 1200px; }
+        
+        .header { 
+            width: 100%; text-align: center; 
+            border-bottom: 5px solid #002B7F; /* Albastru */
+            margin-bottom: 20px; padding-bottom: 10px;
+        }
 
-<style>
-    body {
-        margin: 0;
-        overflow: hidden;
-        background: #111;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-    }
+        #ceas { font-size: 4rem; color: #FCD116; font-weight: bold; margin: 0; }
+        #data { font-size: 1.5rem; color: #CE1126; margin-bottom: 10px; }
 
-    #hud {
-        position: fixed;
-        top: 10px;
-        width: 100%;
-        font-size: 22px;
-        z-index: 10;
-    }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 20px; width: 100%;
+        }
 
-    #gameArea {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-    }
+        .card { 
+            background: #000; 
+            border: 3px solid #FCD116; /* Galben */
+            border-radius: 10px; 
+            padding: 15px;
+            overflow: hidden;
+        }
 
-    .target {
-        position: absolute;
-        width: 120px;
-        height: 150px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        padding-top: 5px;
-        color: black;
-        font-weight: bold;
-        border: 3px solid white;
-    }
+        h2 { 
+            color: white; background: #CE1126; /* Rosu */
+            padding: 10px; margin: -15px -15px 15px -15px; 
+            font-size: 1.2rem; text-align: center;
+            border-bottom: 3px solid #002B7F;
+        }
 
-    .avatar {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 5px;
-    }
-</style>
+        /* Stil pentru Widget-uri */
+        .widget-placeholder { min-height: 400px; background: #111; }
+        
+        /* Sectiune Task-uri */
+        input { background: #222; color: white; border: 1px solid #002B7F; padding: 10px; width: 70%; }
+        button { background: #FCD116; color: black; border: none; padding: 10px; font-weight: bold; cursor: pointer; }
+        ul { list-style: none; padding: 0; text-align: left; }
+        li { border-bottom: 1px solid #CE1126; padding: 8px; display: flex; justify-content: space-between; }
+    </style>
 </head>
-
 <body>
 
-<div id="hud">
-    Scor: <span id="score">0</span> |
-    Gloanțe: <span id="ammo">30</span> |
-    Timp: <span id="time">20</span>
-</div>
+    <div class="container">
+        <div class="header">
+            <div id="ceas">00:00:00</div>
+            <div id="data">Se încarcă data...</div>
+        </div>
 
-<div id="gameArea">
+        <div class="grid">
+            
+            <div class="card">
+                <h2>VREMEA (București / Pantelimon)</h2>
+                <a class="weatherwidget-io" href="https://forecast7.com/ro/44a4326a10/bucharest/" data-label_1="BUCUREȘTI" data-label_2="VREMEA" data-theme="dark" data-basecolor="#000000" data-accent="#FCD116" data-textcolor="#ffffff" data-highcolor="#CE1126" data-lowcolor="#002B7F" >BUCUREȘTI VREMEA</a>
+                <script>
+                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget-io.com/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+                </script>
+            </div>
 
-    <div id="orlando" class="target">
-        <img src="FB_IMG_1776274065002.jpg" class="avatar">
-        Orlando
+            <div class="card">
+                <h2>FOTBAL LIVE & CLASAMENT</h2>
+                <div style="height: 500px; overflow-y: auto;">
+                    <iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="500" allowfullscreen allow='autoplay; fullscreen' style="width:100%;height:500px;overflow:hidden;background-color: black;" class="_scorebatEmbeddedPlayer_"></iframe>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>ȘTIRI DE ULTIMĂ ORĂ (RO)</h2>
+                <div id="rss-feed" style="height: 400px; overflow-y: auto;">
+                    <iframe width="100%" height="400" src="https://www.bing.com/news/search?q=stiri+romania&format=rss" frameborder="0"></iframe>
+                    <p style="font-size: 0.8rem; color: #FCD116;">* Sfat: Pentru cele mai noi știri, apasă pe card.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>TASK-URILE MELE</h2>
+                <input type="text" id="taskInput" placeholder="Scrie ceva de făcut...">
+                <button onclick="addTask()">ADĂUGĂ</button>
+                <ul id="taskList"></ul>
+            </div>
+
+        </div>
     </div>
 
-    <div id="pelicanul" class="target">
-        <img src="images.jpeg" class="avatar">
-        Pelicanul
-    </div>
-
-    <div id="cristian" class="target">
-        <img src="20260415_164254.jpg" class="avatar">
-        Cristian
-    </div>
-
-</div>
-
-<script>
-let score = 0;
-let ammo = 30;
-let timeLeft = 20;
-
-const orlando = document.getElementById("orlando");
-const pelicanul = document.getElementById("pelicanul");
-const cristian = document.getElementById("cristian");
-
-let moveInterval;
-let gameInterval;
-
-function randomPosition(target) {
-    const area = document.getElementById("gameArea");
-    const maxX = area.clientWidth - 120;
-    const maxY = area.clientHeight - 150;
-
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    target.style.left = x + "px";
-    target.style.top = y + "px";
-}
-
-function shoot(targetName, element) {
-    if (ammo <= 0) return;
-
-    ammo--;
-    document.getElementById("ammo").textContent = ammo;
-
-    if (targetName === "pelicanul") score++;
-    if (targetName === "orlando") score--;
-    if (targetName === "cristian") score--;
-
-    document.getElementById("score").textContent = score;
-}
-
-orlando.onclick = () => shoot("orlando", orlando);
-pelicanul.onclick = () => shoot("pelicanul", pelicanul);
-cristian.onclick = () => shoot("cristian", cristian);
-
-function startMovingTargets() {
-    moveInterval = setInterval(() => {
-        randomPosition(orlando);
-        randomPosition(pelicanul);
-        randomPosition(cristian);
-    }, 600);
-}
-
-function startGameTimer() {
-    gameInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById("time").textContent = timeLeft;
-
-        if (timeLeft <= 0 || ammo <= 0) {
-            endGame();
+    <script>
+        // Ceas și Dată
+        function updateTime() {
+            const acum = new Date();
+            const optiuni = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('ceas').innerText = acum.toLocaleTimeString('ro-RO');
+            document.getElementById('data').innerText = acum.toLocaleDateString('ro-RO', optiuni);
         }
-    }, 1000);
-}
+        setInterval(updateTime, 1000);
+        updateTime();
 
-function endGame() {
-    clearInterval(moveInterval);
-    clearInterval(gameInterval);
-    alert("Joc terminat! Scor final: " + score);
-}
-
-function randomColor() {
-    const colors = ["red", "yellow", "blue", "orange", "purple", "green"];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-setInterval(() => {
-    orlando.style.background = randomColor();
-    pelicanul.style.background = randomColor();
-    cristian.style.background = randomColor();
-}, 500);
-
-startMovingTargets();
-startGameTimer();
-</script>
-
+        // Gestionare Task-uri
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            if (input.value.trim() === "") return;
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${input.value}</span> <button onclick="this.parentElement.remove()" style="background:red; color:white; padding:2px 5px; font-size:10px;">X</button>`;
+            document.getElementById('taskList').appendChild(li);
+            input.value = "";
+            // Salvare locală simplă
+            localStorage.setItem('tasks', document.getElementById('taskList').innerHTML);
+        }
+        
+        // Incarca task-urile salvate
+        window.onload = function() {
+            if(localStorage.getItem('tasks')) {
+                document.getElementById('taskList').innerHTML = localStorage.getItem('tasks');
+            }
+        };
+    </script>
 </body>
 </html>
+ 
